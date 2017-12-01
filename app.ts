@@ -25,7 +25,7 @@ app.post("/mapsave", function (request, response) {
     
     fs.writeFile("map.json", JSON.stringify(request.body), function (err)
     {
-        if (err) { }
+        if (err) { console.log(err); }
     });   
 })
 
@@ -34,7 +34,7 @@ app.get("/mapload", function (request, response) {
 
     fs.readFile("map.json", "utf8", function (err, mapString)
     {
-        if (err) { }
+        if (err) { console.log(err); }
         response.send(JSON.parse(mapString));
     });
 });
