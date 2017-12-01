@@ -17,13 +17,13 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.post("/mapsave", function (request, response) {
     var fs = require("fs");
-    fs.writeFile("../Storage/map.txt", JSON.stringify(request.body), function (err) {
+    fs.writeFile("map.json", JSON.stringify(request.body), function (err) {
         if (err) { }
     });
 });
 app.get("/mapload", function (request, response) {
     var fs = require('fs');
-    fs.readFile("../Storage/map.txt", "utf8", function (err, mapString) {
+    fs.readFile("map.json", "utf8", function (err, mapString) {
         if (err) { }
         response.send(JSON.parse(mapString));
     });
