@@ -1,4 +1,4 @@
-var MapField = (function () {
+var MapField = /** @class */ (function () {
     function MapField(x, y, width, height, color) {
         this.X = x;
         this.Y = y;
