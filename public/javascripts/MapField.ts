@@ -1,43 +1,44 @@
-﻿
-class MapField {
-    constructor(x: number, y: number, width: number, height: number, color: string) {
-        this.X = x;
-        this.Y = y;
-        this.Width = width;
-        this.Height = height;
-        this.Color = color;
+﻿class MapField {
+    constructor(x: number, y: number, color: string, value: number, pixmap: Pixmap) {
+        this.x = x;
+        this.y = y;
+        this.pixmap = pixmap;
+        this.color = color;
+        this.value = value;
     }
 
-    GetDivElement(): HTMLDivElement{
+    getDivElement(): HTMLDivElement{
         let self = this;
-        this.DivElement = document.createElement("div");
+        this.divElement = document.createElement("div");
 
-        this.DivElement.className = "mapfield";
-        this.DivElement.id = "x" + this.X + "y" + this.Y;
-        this.DivElement.style.width = this.Width.toString() + "px";
-        this.DivElement.style.height = this.Height.toString() + "px";
-        this.DivElement.style.backgroundColor = this.Color;
+        this.divElement.className = "mapfield";
+        this.divElement.id = "x" + this.x + "y" + this.y;
+        this.divElement.style.width = this.pixmap.fieldWidth + "px";
+        this.divElement.style.height = this.pixmap.fieldHeight + "px";
+        this.divElement.style.backgroundColor = this.color;
 
-        this.DivElement.addEventListener("mouseenter", function (e: MouseEvent) {
-            this.style.backgroundColor = "blue";
+        this.divElement.addEventListener("mouseenter", function (e: MouseEvent) {
+            this.style.backgroundColor = "lightblue";
         });
 
-        this.DivElement.addEventListener("mouseleave", function (e: MouseEvent) {
-            this.style.backgroundColor = self.Color;
+        this.divElement.addEventListener("mouseleave", function (e: MouseEvent) {
+            this.style.backgroundColor = self.color;
         });
 
-        this.DivElement.addEventListener("mousedown", function (e: MouseEvent) {
-            let cc = document.getElementById("clickColor") as HTMLButtonElement;
-            self.Color = cc.style.backgroundColor;
+        this.divElement.addEventListener("mousedown", function (e: MouseEvent) {
+            // let cc = document.getElementById("clickcolor") as HTMLButtonElement;
+            // self.color = rgb2hex(cc.style.backgroundColor);
+            let editDialog = new EditDialog(self);
+            editDialog.show();
         });        
 
-        return this.DivElement;
+        return this.divElement;
     }
 
-    private DivElement: HTMLDivElement;
-    X: number;
-    Y: number;
-    Width: number;
-    Height: number;
-    Color: string;
+    private divElement: HTMLDivElement;
+    pixmap: Pixmap;
+    x: number;
+    y: number;   
+    color: string;
+    value: number;
 }

@@ -23,11 +23,6 @@ app.post("/mapsave", function (request, response) {
             console.log(error);
         }
     });
-    // let fs = require("fs");
-    // fs.writeFile("map.json", JSON.stringify(request.body), function (err)
-    // {
-    //     if (err) { console.log(err); }
-    // });   
 });
 app.get("/mapload", function (request, response) {
     blobSvc.getBlobToText("pixmapcontainer", "pixmapblob", function (error, text, servRespone) {
@@ -37,12 +32,6 @@ app.get("/mapload", function (request, response) {
         ;
         response.send(JSON.parse(text));
     });
-    // let fs = require('fs');
-    // fs.readFile("map.json", "utf8", function (err, mapString)
-    // {
-    //     if (err) { console.log(err); }
-    //     response.send(JSON.parse(mapString));
-    // });
 });
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

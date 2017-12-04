@@ -1,30 +1,32 @@
 var MapField = /** @class */ (function () {
-    function MapField(x, y, width, height, color) {
-        this.X = x;
-        this.Y = y;
-        this.Width = width;
-        this.Height = height;
-        this.Color = color;
+    function MapField(x, y, color, value, pixmap) {
+        this.x = x;
+        this.y = y;
+        this.pixmap = pixmap;
+        this.color = color;
+        this.value = value;
     }
-    MapField.prototype.GetDivElement = function () {
+    MapField.prototype.getDivElement = function () {
         var self = this;
-        this.DivElement = document.createElement("div");
-        this.DivElement.className = "mapfield";
-        this.DivElement.id = "x" + this.X + "y" + this.Y;
-        this.DivElement.style.width = this.Width.toString() + "px";
-        this.DivElement.style.height = this.Height.toString() + "px";
-        this.DivElement.style.backgroundColor = this.Color;
-        this.DivElement.addEventListener("mouseenter", function (e) {
-            this.style.backgroundColor = "blue";
+        this.divElement = document.createElement("div");
+        this.divElement.className = "mapfield";
+        this.divElement.id = "x" + this.x + "y" + this.y;
+        this.divElement.style.width = this.pixmap.fieldWidth + "px";
+        this.divElement.style.height = this.pixmap.fieldHeight + "px";
+        this.divElement.style.backgroundColor = this.color;
+        this.divElement.addEventListener("mouseenter", function (e) {
+            this.style.backgroundColor = "lightblue";
         });
-        this.DivElement.addEventListener("mouseleave", function (e) {
-            this.style.backgroundColor = self.Color;
+        this.divElement.addEventListener("mouseleave", function (e) {
+            this.style.backgroundColor = self.color;
         });
-        this.DivElement.addEventListener("mousedown", function (e) {
-            var cc = document.getElementById("clickColor");
-            self.Color = cc.style.backgroundColor;
+        this.divElement.addEventListener("mousedown", function (e) {
+            // let cc = document.getElementById("clickcolor") as HTMLButtonElement;
+            // self.color = rgb2hex(cc.style.backgroundColor);
+            var editDialog = new EditDialog(self);
+            editDialog.show();
         });
-        return this.DivElement;
+        return this.divElement;
     };
     return MapField;
 }());

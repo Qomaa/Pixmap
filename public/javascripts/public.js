@@ -1,23 +1,21 @@
-var dbg;
 var map;
-var saveButton;
-var loadButton;
+var editDialog;
+var RECEIVE_ADDRESS;
 window.onload = function () {
-    dbg = document.getElementById("debug");
-    map = new Map();
-    map.Load();
-    //map = new Map(400, 400, 50, 50);
-    //map.GenerateMapFields();
-    saveButton = document.getElementById("save");
+    map = new Pixmap();
+    map.load();
+    //HOLEN AUS BLOB
+    RECEIVE_ADDRESS = "QZZFKBIQNIBFNZBEU9DLGKHRMOWWGRDAYBKFAXSBWMDXEEAWIRUDDOVSEEFJ9ECH9VWJAFKLHSFAYUHJCEVZALQHQX";
+    editDialog = document.getElementById("editDialog");
+    var saveButton = document.getElementById("save");
     saveButton.addEventListener("click", function (e) {
-        map.Save();
-    });
-    loadButton = document.getElementById("load");
-    loadButton.addEventListener("click", function (e) {
-        map.Load();
+        map.save();
     });
 };
-function debug(text) {
-    dbg.innerText = dbg.innerText + "\r" + text;
-}
+window.onclick = function (event) {
+    if (event.target == editDialog) {
+        //Dialog schließen
+        editDialog.style.display = "none";
+    }
+};
 //# sourceMappingURL=public.js.map

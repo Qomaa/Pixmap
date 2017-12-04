@@ -1,18 +1,27 @@
 ﻿body {
     padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-color: #FFEDB6;
 }
 
-a {
-    color: #00B7FF;
-}
-
-.map {
+#pixmap {
     border: solid;
     border-color: darkgrey;
+    border-width: 2px;
+    margin: auto;
 }
 
 .mapfield {
     float: left;
-    background-color: aqua;
+}
+
+#save {
+    margin: auto;
+    border-width: 1px;
+    border-color: lightgray;
+}
+
+#clickcolorbutton{
+    padding-top: 10px;
+    padding-left: 48%;
 }

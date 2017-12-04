@@ -1,30 +1,25 @@
-﻿
-let dbg: HTMLElement;
-let map: Map;
-let saveButton: HTMLButtonElement;
-let loadButton: HTMLButtonElement;
+﻿let map: Pixmap;
+let editDialog: HTMLDivElement;
+let RECEIVE_ADDRESS: string;
 
 window.onload = function () {
-    dbg = document.getElementById("debug");
+    map = new Pixmap();
+    map.load();
 
-    map = new Map();
-    map.Load();
+    //HOLEN AUS BLOB
+    RECEIVE_ADDRESS = "QZZFKBIQNIBFNZBEU9DLGKHRMOWWGRDAYBKFAXSBWMDXEEAWIRUDDOVSEEFJ9ECH9VWJAFKLHSFAYUHJCEVZALQHQX";
 
-    //map = new Map(400, 400, 50, 50);
-    //map.GenerateMapFields();
+    editDialog = document.getElementById("editDialog") as HTMLDivElement;
 
-    saveButton = document.getElementById("save") as HTMLButtonElement;
-    saveButton.addEventListener("click", function (e: MouseEvent) {
-        map.Save();
-    });
-
-    loadButton = document.getElementById("load") as HTMLButtonElement;
-    loadButton.addEventListener("click", function (e: MouseEvent) {
-        map.Load();
+    let saveButton = document.getElementById("save") as HTMLButtonElement;
+    saveButton.addEventListener("click", function(e){
+        map.save();
     });
 }
 
-function debug(text) {
-    dbg.innerText = dbg.innerText + "\r" + text;
+window.onclick = function(event) {
+    if (event.target == editDialog) {
+        //Dialog schließen
+        editDialog.style.display = "none";
+    }
 }
-
