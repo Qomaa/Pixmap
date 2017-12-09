@@ -6,7 +6,7 @@ window.onload = function () {
     map.load();
     editDialog = new EditDialog();
     map.divElement.addEventListener("mousedown", function (e) {
-        console.log(e);
+        //console.log(e);
         var id = e.target.id;
         var x = +id.substring(1, id.indexOf("y")); /* + heißt "als number" */
         var y = +id.substring(id.indexOf("y") + 1);
@@ -14,10 +14,10 @@ window.onload = function () {
     });
     //HOLEN AUS BLOB
     RECEIVE_ADDRESS = "QZZFKBIQNIBFNZBEU9DLGKHRMOWWGRDAYBKFAXSBWMDXEEAWIRUDDOVSEEFJ9ECH9VWJAFKLHSFAYUHJCEVZALQHQX";
-    var saveButton = document.getElementById("save");
-    saveButton.addEventListener("click", function (e) {
-        map.save();
-    });
+    // let saveButton = document.getElementById("save") as HTMLButtonElement;
+    // saveButton.addEventListener("click", function(e){
+    //     map.save();
+    // });
 };
 window.onclick = function (event) {
     if (event.target == editDialog.dialogDiv) {

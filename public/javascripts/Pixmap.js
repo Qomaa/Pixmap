@@ -14,7 +14,7 @@ var Pixmap = /** @class */ (function () {
         xhttp.open("POST", "/mapsave", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(mapString);
-        console.log(mapString);
+        //console.log(mapString);
     };
     Pixmap.prototype.load = function () {
         var m;
@@ -44,7 +44,7 @@ var Pixmap = /** @class */ (function () {
             if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)
                 return;
             m = JSON.parse(xhttp.responseText);
-            console.log(xhttp.responseText);
+            //console.log(xhttp.responseText);
             self.width = m.width;
             self.height = m.height;
             self.fieldLength = m.fieldLength;

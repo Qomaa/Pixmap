@@ -6,7 +6,6 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var azure = require("azure-storage");
 var index_1 = require("./routes/index");
-var user_1 = require("./routes/user");
 var app = express();
 var blobSvc = azure.createBlobService();
 // view engine setup
@@ -14,23 +13,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index_1.default);
-app.use('/users', user_1.default);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-app.post("/mapsave", function (request, response) {
-    blobSvc.createBlockBlobFromText("pixmapcontainer", "pixmapblob", JSON.stringify(request.body), function (error, result, servResponse) {
-        if (error) {
-            console.log(error);
-        }
-    });
-});
+// app.post("/mapsave", function (request, response) {
+//     blobSvc.createBlockBlobFromText("pixmapcontainer", "pixmapblob", JSON.stringify(request.body), function (error, result, servResponse) {
+//         if (error) { console.log(error) }
+//     });
+// })
 app.get("/mapload", function (request, response) {
     blobSvc.getBlobToText("pixmapcontainer", "pixmapblob", function (error, text, servRespone) {
         if (error) {
             console.log(error);
         }
         ;
-        console.log(JSON.parse(text));
+        //console.log(JSON.parse(text));
         response.send(JSON.parse(text));
     });
 });
