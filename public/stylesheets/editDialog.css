@@ -18,10 +18,33 @@
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 50%;
+    width: calc(var(--pixmapWidth) - (var(--pixmapWidth) * 0.2));
     text-align: center;
     box-shadow: 0px 0px 50px;
     border-radius: 10px;
+}
+
+#dialogColor{
+    border: 1px solid gray; 
+    width: 125px; 
+    height: 125px; 
+    cursor: pointer;
+}
+
+#dialogValue{
+    font-size:xx-large;
+    background-color: #00ff0570;
+    border-radius: 20px;
+    margin-top: 0px;
+    margin-bottom: 30px;
+    margin-left: calc(var(--pixmapWidth)/ 2.6);
+    margin-right: calc(var(--pixmapWidth)/ 2.6);
+}
+
+#transferAddress{
+    font-size: x-small;
+    font-weight: bold;
+    word-wrap: break-word;
 }
 
 /* The Close Button */

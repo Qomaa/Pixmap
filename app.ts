@@ -22,14 +22,15 @@ app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 app.post("/mapsave", function (request, response) {
-    blobSvc.createBlockBlobFromText("pixmapcontainer", "pixmapblob", JSON.stringify(request.body), function(error, result, servResponse){
-        if (error){console.log(error)}
-    } );
+    blobSvc.createBlockBlobFromText("pixmapcontainer", "pixmapblob", JSON.stringify(request.body), function (error, result, servResponse) {
+        if (error) { console.log(error) }
+    });
 })
 
 app.get("/mapload", function (request, response) {
-    blobSvc.getBlobToText("pixmapcontainer","pixmapblob",function(error, text, servRespone){
-        if (error) {console.log(error)};
+    blobSvc.getBlobToText("pixmapcontainer", "pixmapblob", function (error, text, servRespone) {
+        if (error) { console.log(error) };
+        //console.log(JSON.parse(text));
         response.send(JSON.parse(text));
     })
 });

@@ -14,24 +14,26 @@ var Pixmap = /** @class */ (function () {
         xhttp.open("POST", "/mapsave", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(mapString);
+        console.log(mapString);
     };
     Pixmap.prototype.load = function () {
         var m;
         var self = this;
+        var body = document.querySelector("body");
         //Initial
-        // this.width = 600;
+        // this.width = 800;
         // this.height = 600;
-        // self.divElement.style.width = this.width + "px";
-        // self.divElement.style.height = this.height + "px";
-        // self.rowCount = 100;
-        // self.columnCount = 100;
-        // self.fieldWidth = this.width / self.rowCount;
-        // self.fieldHeight = this.height / self.columnCount;
-        // for (var x = 0; x < self.rowCount; x++) {
-        //     for (var y = 0; y < self.columnCount; y++) {
-        //         let mapField = new MapField(x, y,"#FFFFFF", 1, self);
-        //         self.mapFields.push(mapField);
-        //         self.divElement.appendChild(mapField.getDivElement());
+        // this.fieldLength = 5;
+        // body.style.setProperty("--pixmapWidth", this.width + "px");
+        // body.style.setProperty("--pixmapHeight", this.height + "px");
+        // body.style.setProperty('--mapFieldLength', this.fieldLength + "px");
+        // this.rowCount = this.height / this.fieldLength;
+        // this.columnCount = this.width / this.fieldLength;
+        // for (var x = 0; x < this.rowCount; x++) {
+        //     for (var y = 0; y < this.columnCount; y++) {
+        //         let mapField = new MapField(x, y,"#FFFFFF", 1, this);
+        //         this.mapFields.push(mapField);
+        //         this.divElement.appendChild(mapField.getDivElement());
         //     }
         // }
         //From Server server holen
@@ -42,12 +44,10 @@ var Pixmap = /** @class */ (function () {
             if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)
                 return;
             m = JSON.parse(xhttp.responseText);
+            console.log(xhttp.responseText);
             self.width = m.width;
             self.height = m.height;
-            self.fieldWidth = m.fieldWidth;
-            self.fieldHeight = m.fieldHeight;
-            self.divElement.style.width = m.width + "px";
-            self.divElement.style.height = m.height + "px";
+            self.fieldLength = m.fieldLength;
             self.rowCount = m.rowCount;
             self.columnCount = m.columnCount;
             self.mapFields = m.mapFields;
@@ -57,9 +57,13 @@ var Pixmap = /** @class */ (function () {
     };
     Pixmap.prototype.generateMap = function () {
         var self = this;
+        var body = document.querySelector("body");
         while (this.divElement.firstChild) {
             this.divElement.removeChild(this.divElement.firstChild);
         }
+        body.style.setProperty('--mapFieldLength', this.fieldLength + "px");
+        body.style.setProperty("--pixmapWidth", this.width + "px");
+        body.style.setProperty("--pixmapHeight", this.height + "px");
         this.mapFields.forEach(function (mapField) {
             mapField.getDivElement = MapField.prototype.getDivElement; //Die Funktion kommt nicht aus dem JSON-Objekt und muss manuell zugewiesen werden.
             mapField.pixmap = self;

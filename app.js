@@ -30,6 +30,7 @@ app.get("/mapload", function (request, response) {
             console.log(error);
         }
         ;
+        console.log(JSON.parse(text));
         response.send(JSON.parse(text));
     });
 });

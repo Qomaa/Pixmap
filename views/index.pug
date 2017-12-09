@@ -2,7 +2,10 @@
 extends layout
 
 block content
+    #title IOTA MAP
     #pixmap
+    #about
+        p about
     #editDialog
         #dialogContent
             p(style="text-align:right;font-size:larger;margin:0px")
@@ -10,21 +13,21 @@ block content
             p(style="margin:3px;font-size:x-small;")
                 span#dialogXY
             p(style="margin:0px")
-                button(id="dialogColor", class="jscolor {valueElement:'dialogColorValue'}", style="border:1px solid gray; width:150px; height:150px") Select your color
+                button#dialogColor(class="jscolor {valueElement:'dialogColorValue'}") Select your color
                 input#dialogColorValue(type="hidden")
-            p(style="margin-top:10px;margin-bottom:5px;font-size:large") Current IOTA value
-            p#dialogValue(style="font-size:xx-large;margin:0px")
-            p(style="text-align:left; margin=10px") To set your selected color, transfer at least 
+            p(style="margin-top:10px;margin-bottom:5px;font-size:large") Current value
+            p#dialogValue
+            p(style="text-align:left; margin:5px") Address: 
+                span#transferAddress
+            p(style="text-align:left; margin:5px") Amount at least: 
                 span#transferIota(style="font-weight:bold;")
-                | IOTAs to the address 
-                span#transferAddress(style="font-size:x-small;word-wrap:break-word")
-                | with the tag 
+            p(style="text-align:left; margin:5px") Tag: 
                 span#transferTag(style="font-weight:bold;")
-                | .
-                
-    #clickcolorbutton
-        button(id="clickcolor", class="jscolor {valueElement:null,value:'66ccff'}", style="border:1px solid gray") Color
-        button(id="save") save
+            p(style="text-align:left; margin:30px") To set your selected color public, transfer IOTAs to the mentioned address and tag.
+    button(id="save") save
+
+    //- #clickcolorbutton
+    //-     button(id="clickcolor", class="jscolor {valueElement:null,value:'66ccff'}", style="border:1px solid gray") Color
 
     //- <div id="save">Save</div>
     //- <div id="highlightColor"></div>
