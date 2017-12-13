@@ -41,4 +41,4 @@ function fromTrytes(inputTrytes) {
     }
     return outputString;
 }
-//# sourceMappingURL=Utils.js.map
+//# sourceMappingURL=utils.js.map

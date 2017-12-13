@@ -1,19 +1,25 @@
 var EditDialog = /** @class */ (function () {
     function EditDialog() {
         var _this = this;
-        this.closeSpan = document.getElementById("dialogClose");
-        this.closeSpan.addEventListener("click", function (e) { return _this.hide(); });
         this.dialogDiv = document.getElementById("editDialog");
         this.positionSpan = document.getElementById("dialogXY");
+        this.XYSpan = document.getElementById("XY");
         this.valueSpan = document.getElementById("dialogValue");
-        this.transferIotaSpan = document.getElementById("transferIota");
-        this.transferAddressSpan = document.getElementById("transferAddress");
-        this.transferTagSpan = document.getElementById("transferTag");
+        this.transferIotaInput = document.getElementById("transferIota");
+        this.transferAddressInput = document.getElementById("transferAddress");
+        this.transferTagInput = document.getElementById("transferTag");
+        this.transferAddressInput.addEventListener("click", function (e) { return _this.transferAddressInput.select(); });
+        this.transferTagInput.addEventListener("click", function (e) { return _this.transferTagInput.select(); });
+        this.transferIotaInput.addEventListener("click", function (e) {
+            _this.transferIotaInput.selectionStart = 0;
+            _this.transferIotaInput.selectionEnd = _this.transferIotaInput.value.length - 1;
+        });
     }
     EditDialog.prototype.show = function (mapField) {
         var _this = this;
-        this.valueSpan.textContent = mapField.value.toString();
+        this.valueSpan.textContent = mapField.value.toString() + "i";
         this.positionSpan.textContent = "X: " + (mapField.x + 1) + "  Y: " + (mapField.y + 1);
+        this.XYSpan.textContent = " " + this.positionSpan.textContent;
         this.colorButton = document.getElementById("dialogColor");
         this.colorButton.jscolor.onFineChange = function () {
             _this.colorHex = _this.colorButton.jscolor.toHEXString();
@@ -21,16 +27,13 @@ var EditDialog = /** @class */ (function () {
         };
         this.colorButton.jscolor.fromString(mapField.color);
         this.colorHex = this.colorButton.jscolor.toHEXString();
-        this.updateInstruction(mapField);
+        this.transferIotaInput.value = (mapField.value + 1).toString() + "i";
+        this.transferAddressInput.value = RECEIVE_ADDRESS;
+        this.updateTag(mapField);
         this.dialogDiv.style.display = "block";
     };
     EditDialog.prototype.hide = function () {
         this.dialogDiv.style.display = "none";
-    };
-    EditDialog.prototype.updateInstruction = function (mapField) {
-        this.transferIotaSpan.textContent = (mapField.value + 1).toString() + " i";
-        this.transferAddressSpan.textContent = RECEIVE_ADDRESS;
-        this.updateTag(mapField);
     };
     EditDialog.prototype.updateTag = function (mapField) {
         var ascii;
@@ -39,8 +42,7 @@ var EditDialog = /** @class */ (function () {
             pad(mapField.y.toString(), 2, "0") +
             this.colorHex;
         tag = toTrytes(ascii);
-        this.transferTagSpan.textContent = tag;
-        //console.log(fromTrytes(tag));
+        this.transferTagInput.value = tag;
     };
     return EditDialog;
 }());

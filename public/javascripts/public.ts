@@ -1,6 +1,9 @@
 ﻿let map: Pixmap;
 let editDialog: EditDialog; 
 let RECEIVE_ADDRESS: string;
+// import two = require ("./two/two.min.js");
+//import t from "./two/two.min.js";
+ 
 
 window.onload = function () {
     map = new Pixmap();
@@ -20,10 +23,13 @@ window.onload = function () {
     //HOLEN AUS BLOB
     RECEIVE_ADDRESS = "QZZFKBIQNIBFNZBEU9DLGKHRMOWWGRDAYBKFAXSBWMDXEEAWIRUDDOVSEEFJ9ECH9VWJAFKLHSFAYUHJCEVZALQHQX";
 
+    
+
     // let saveButton = document.getElementById("save") as HTMLButtonElement;
     // saveButton.addEventListener("click", function(e){
     //     map.save();
     // });
+    
 }
 
 window.onclick = function(event) {

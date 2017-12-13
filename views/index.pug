@@ -2,37 +2,24 @@
 extends layout
 
 block content
-    #title IOTA MAP
+    #title= title
     #pixmap
-    //- #about
-    //-     p about
     #editDialog
         #dialogContent
-            p(style="text-align:right;font-size:larger;margin:0px")
-                span#dialogClose X
+            p#dialogValue
             p(style="margin:3px;font-size:x-small;")
                 span#dialogXY
             p(style="margin:0px")
-                button#dialogColor(class="jscolor {valueElement:'dialogColorValue'}") Select your color
-                input#dialogColorValue(type="hidden")
-            p(style="margin-top:10px;margin-bottom:5px;font-size:large") Current value
-            p#dialogValue
-            p(style="text-align:left; margin:5px") Address: 
-                span#transferAddress
-            p(style="text-align:left; margin:5px") Amount at least: 
-                span#transferIota(style="font-weight:bold;")
-            p(style="text-align:left; margin:5px") Tag: 
-                span#transferTag(style="font-weight:bold;")
-            p(style="text-align:left; margin:30px") To set your selected color public, transfer IOTAs to the mentioned address and tag.
+                button#dialogColor(class="jscolor {valueElement:'dialogColorValue', position:'right'}") Select your color
+            p(style="margin:0px")
+                input#dialogColorValue(type="input" readonly)
+            p(style="margin:30px 0px 0px") Address:
+                input#transferAddress.copyField(type="input" readonly)
+            p(style="margin:10px 0px 5px 0px") Amount at least:
+                input#transferIota.copyField(type="input" readonly)
+            p(style="margin:10px 0px 5px 0px") Tag:
+                input#transferTag.copyField(type="input" readonly)
+            p(style="margin:30px") Transfer IOTAs to the mentioned address and tag. As soon as the transaction is confirmed, your selected color will be displayed at
+                span#XY
+                | .
     //- button(id="save") save
-
-    //- #clickcolorbutton
-    //-     button(id="clickcolor", class="jscolor {valueElement:null,value:'66ccff'}", style="border:1px solid gray") Color
-
-    //- <div id="save">Save</div>
-    //- <div id="highlightColor"></div>
-    //- <div id="clickcolor" class="jscolor {valueElement:'clickColor', value:'66ccff'}"></div>
-    //- <button id="clickColor" class="jscolor {valueElement:'clickColor', value:'66ccff'}"></button>
-    //- <button id="load">Load</button>
-    //- <button id="save">Save</button>
-    //- <div id="debug"></div>

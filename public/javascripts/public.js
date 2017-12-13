@@ -1,6 +1,8 @@
 var map;
 var editDialog;
 var RECEIVE_ADDRESS;
+// import two = require ("./two/two.min.js");
+//import t from "./two/two.min.js";
 window.onload = function () {
     map = new Pixmap();
     map.load();

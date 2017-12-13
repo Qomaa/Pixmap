@@ -5,7 +5,6 @@ import bodyParser = require('body-parser');
 import azure = require('azure-storage');
 
 import routes from './routes/index';
-import users from './routes/user';
 
 var app = express();
 var blobSvc = azure.createBlobService();
