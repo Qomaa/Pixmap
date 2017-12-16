@@ -1,5 +1,3 @@
-﻿# Pixmap
+﻿# iota.show
 
-
-## Todo
-- Lizenz wg. jscolor?
+ [http://iota-show/](http://iota-show/)

@@ -21,20 +21,8 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 //         if (error) { console.log(error) }
 //     });
 // })
-/* NEUE ADRESSE SETZEN  */
-// blobSvc.createBlockBlobFromText("pixmapcontainer", "iotaReceiveAddress",
-//     "CCUHXDMMHJMRYPRASPIEUHCAYMTUPCOPAFDZHXQZFROQMRYBUUGX9ZMPCJYJPJ9FICQVTZUIVFSKFUPLWJWDEACDAD",
-//     function (error, result, servResponse) {
-//         if (error) { console.log(error) }
-//     });
 app.get("/address", function (request, response) {
-    blobSvc.getBlobToText("pixmapcontainer", "iotaReceiveAddress", function (error, text, servRespone) {
-        if (error) {
-            console.log(error);
-        }
-        ;
-        response.send(text);
-    });
+    response.send(process.env.IOTA_ADDRESS);
 });
 app.get("/mapload", function (request, response) {
     blobSvc.getBlobToText("pixmapcontainer", "pixmapblob", function (error, text, servRespone) {
