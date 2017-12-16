@@ -18,7 +18,7 @@ class EditDialog {
 
     show(mapField: MapField) {
         this.valueSpan.textContent = mapField.value.toString() + "i";
-        this.positionSpan.textContent = "X: " + (mapField.x + 1) + "  Y: " + (mapField.y + 1);
+        this.positionSpan.textContent = "X:" + (mapField.x + 1) + "  Y:" + (mapField.y + 1);
         this.XYSpan.textContent = " " + this.positionSpan.textContent;
 
         this.colorButton = document.getElementById("dialogColor");

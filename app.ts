@@ -3,7 +3,6 @@ import express = require('express');
 import path = require('path');
 import bodyParser = require('body-parser');
 import azure = require('azure-storage');
-
 import routes from './routes/index';
 
 var app = express();
@@ -19,19 +18,35 @@ app.use('/', routes);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
+/* MAP SPEICHERN */
 // app.post("/mapsave", function (request, response) {
 //     blobSvc.createBlockBlobFromText("pixmapcontainer", "pixmapblob", JSON.stringify(request.body), function (error, result, servResponse) {
 //         if (error) { console.log(error) }
 //     });
 // })
 
+/* NEUE ADRESSE SETZEN  */
+// blobSvc.createBlockBlobFromText("pixmapcontainer", "iotaReceiveAddress",
+//     "CCUHXDMMHJMRYPRASPIEUHCAYMTUPCOPAFDZHXQZFROQMRYBUUGX9ZMPCJYJPJ9FICQVTZUIVFSKFUPLWJWDEACDAD",
+//     function (error, result, servResponse) {
+//         if (error) { console.log(error) }
+//     });
+
+app.get("/address", function (request, response) {
+    blobSvc.getBlobToText("pixmapcontainer", "iotaReceiveAddress", function (error, text, servRespone) {
+        if (error) { console.log(error) };
+        response.send(text);
+    });
+});
+
 app.get("/mapload", function (request, response) {
     blobSvc.getBlobToText("pixmapcontainer", "pixmapblob", function (error, text, servRespone) {
         if (error) { console.log(error) };
         //console.log(JSON.parse(text));
         response.send(JSON.parse(text));
-    })
+    });
 });
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

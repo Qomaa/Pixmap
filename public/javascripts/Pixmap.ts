@@ -1,4 +1,4 @@
-﻿class Pixmap{
+﻿class Pixmap {
     constructor() { }
 
     save() {
@@ -21,7 +21,7 @@
         let self = this;
         let body = document.querySelector("body");
 
-        //Initial
+        // //Initial
         // this.width = 800;
         // this.height = 600;
         // this.fieldLength = 5;
@@ -37,23 +37,23 @@
         //         this.divElement.appendChild(mapField.getDivElement());
         //     }
         // }
-        
+
         //From Server server holen
         let xhttp: XMLHttpRequest = new XMLHttpRequest();
         xhttp.open("GET", "/mapload", true);
         xhttp.setRequestHeader("Content-Type", "application/json")
         xhttp.onreadystatechange = function () {
-           if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
+            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
 
-           m = JSON.parse(xhttp.responseText);
-           //console.log(xhttp.responseText);
-           self.width = m.width;
-           self.height = m.height;
-           self.fieldLength = m.fieldLength;
-           self.rowCount = m.rowCount;
-           self.columnCount = m.columnCount;
-           self.mapFields = m.mapFields;
-           self.generateMap();
+            m = JSON.parse(xhttp.responseText);
+            //console.log(xhttp.responseText);
+            self.width = m.width;
+            self.height = m.height;
+            self.fieldLength = m.fieldLength;
+            self.rowCount = m.rowCount;
+            self.columnCount = m.columnCount;
+            self.mapFields = m.mapFields;
+            self.generateMap();
         }
         xhttp.send();
     }

@@ -37,7 +37,6 @@
 
 
 .copyField {
-    width: calc(var(--pixmapWidth) * 0.8);
     text-align: center;
     font-weight: bold;
     border-style: solid;
@@ -61,22 +60,15 @@
 }
 
 #transferAddress{
+    width: calc(var(--pixmapWidth) * 0.8);
     font-size: x-small;
     height: 18px;
 }
 
-.highlighttext{
-    font-weight: 23;
+#transferIota{
+    width: calc(var(--pixmapWidth) * 0.2);
 }
 
-.center {
-    text-align: center;
-}
-
-.right {
-    text-align: right;
-}
-
-.left {
-    text-align: left;
+#transferTag{
+    width: calc(var(--pixmapWidth) * 0.3);
 }

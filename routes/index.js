@@ -7,7 +7,7 @@ var express = require("express");
 var router = express.Router();
 router.get('/', function (req, res) {
     res.render('index', {
-        title: 'iota.life',
+        title: 'iota.show',
     });
 });
 exports.default = router;

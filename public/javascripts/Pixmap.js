@@ -20,7 +20,7 @@ var Pixmap = /** @class */ (function () {
         var m;
         var self = this;
         var body = document.querySelector("body");
-        //Initial
+        // //Initial
         // this.width = 800;
         // this.height = 600;
         // this.fieldLength = 5;

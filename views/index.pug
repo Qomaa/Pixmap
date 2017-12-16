@@ -3,7 +3,9 @@ extends layout
 
 block content
     #title= title
+    #loading
     #pixmap
+        p#loading loading ...
     #editDialog
         #dialogContent
             p#dialogValue
@@ -14,11 +16,14 @@ block content
             p(style="margin:0px")
                 input#dialogColorValue(type="input" readonly)
             p(style="margin:30px 0px 0px") Address:
-                input#transferAddress.copyField(type="input" readonly)
+                p(style="margin:0px")
+                    input#transferAddress.copyField(type="input" readonly)
             p(style="margin:10px 0px 5px 0px") Amount at least:
-                input#transferIota.copyField(type="input" readonly)
+                p(style="margin:0px")
+                    input#transferIota.copyField(type="input" readonly)
             p(style="margin:10px 0px 5px 0px") Tag:
-                input#transferTag.copyField(type="input" readonly)
+                p(style="margin:0px")
+                    input#transferTag.copyField(type="input" readonly)
             p(style="margin:30px") Transfer IOTAs to the mentioned address and tag. As soon as the transaction is confirmed, your selected color will be displayed at
                 span#XY
                 | .

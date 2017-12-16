@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/', (req: express.Request, res: express.Response) => {
     res.render('index',
         {
-            title: 'iota.life',
+            title: 'iota.show',
         }
     );
 });

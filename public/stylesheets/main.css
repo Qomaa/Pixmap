@@ -1,6 +1,6 @@
 ﻿body {
-    --pixmapWidth: -1px;
-    --pixmapHeight: -1px;
+    --pixmapWidth: 800px;
+    --pixmapHeight: 600px;
     --mapFieldLength: -1px;
 
     padding: 3%;
@@ -15,6 +15,13 @@
     text-align: center;
     text-shadow: 0px 0px 50px aqua;
     padding-bottom: 50px;
+}
+
+#loading{
+    display: block;
+    color: aqua;
+    font-size: large;
+    text-align: center;
 }
 
 #pixmap {

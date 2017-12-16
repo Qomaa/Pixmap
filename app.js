@@ -15,11 +15,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index_1.default);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+/* MAP SPEICHERN */
 // app.post("/mapsave", function (request, response) {
 //     blobSvc.createBlockBlobFromText("pixmapcontainer", "pixmapblob", JSON.stringify(request.body), function (error, result, servResponse) {
 //         if (error) { console.log(error) }
 //     });
 // })
+/* NEUE ADRESSE SETZEN  */
+// blobSvc.createBlockBlobFromText("pixmapcontainer", "iotaReceiveAddress",
+//     "CCUHXDMMHJMRYPRASPIEUHCAYMTUPCOPAFDZHXQZFROQMRYBUUGX9ZMPCJYJPJ9FICQVTZUIVFSKFUPLWJWDEACDAD",
+//     function (error, result, servResponse) {
+//         if (error) { console.log(error) }
+//     });
+app.get("/address", function (request, response) {
+    blobSvc.getBlobToText("pixmapcontainer", "iotaReceiveAddress", function (error, text, servRespone) {
+        if (error) {
+            console.log(error);
+        }
+        ;
+        response.send(text);
+    });
+});
 app.get("/mapload", function (request, response) {
     blobSvc.getBlobToText("pixmapcontainer", "pixmapblob", function (error, text, servRespone) {
         if (error) {
