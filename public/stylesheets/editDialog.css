@@ -70,5 +70,5 @@
 }
 
 #transferTag{
-    width: calc(var(--pixmapWidth) * 0.3);
+    width: calc(var(--pixmapWidth) * 0.4);
 }
