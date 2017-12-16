@@ -26,7 +26,8 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 // })
 
 app.get("/address", function (request, response) {
-    response.send( process.env.IOTA_ADDRESS);
+    response.send(process.env.IOTA_ADDRESS);
+    console.log(process.env.IOTA_ADDRESS);
 });
 
 app.get("/mapload", function (request, response) {
