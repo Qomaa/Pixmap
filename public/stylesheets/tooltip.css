@@ -1,0 +1,39 @@
+#tooltip {
+    --tooltipPosvalHeight: 20px;
+    --tooltipMessageHeight: 0px;
+    --tooltipLinkHeight: 0px;
+
+    position: absolute; 
+    top: +15px; 
+    left: +20px;
+
+    z-index: 10;
+    width: 300px;
+    height:  calc(var(--tooltipPosvalHeight) + var(--tooltipLinkHeight) + var(--tooltipMessageHeight));
+    padding: 5px;
+    color: rgb(0, 0, 0);
+    background-color: #fff8dd;
+    border: 1px solid silver;
+    border-radius: 5px;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.247);    
+}
+
+#tooltipPosval{
+    font-size: small;
+    margin-top: 0px;
+}
+
+#tooltipLink{
+    font-size: unset;
+    height: var(--tooltipHeight);
+}
+
+#tooltipMessage{
+    background-color: #fff8dd;
+    border:none;
+    height: var(--tooltipHeight);
+    overflow: hidden;
+    width:295px;
+    font-size: large;
+    resize: none;
+}

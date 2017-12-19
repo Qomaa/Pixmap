@@ -4,36 +4,46 @@ extends layout
 block content
     #title= title
     #loading
+    //- #tooltip
     #pixmap
         p#loading loading ...
     p#footer
         a.footerlink(href="https://www.youtube.com/watch?v=ivWqqfzunhI") What is IOTA (video)?
         a.footerlink(href="https://iotasupport.com/gui-sendingandreceiving.shtml") How to transfer IOTA?
         a.footerlink(href="https://github.com/Qomaa/Pixmap") github
-        a.footerlink(href="http://iotart.io/") Heavily inspired by iotart.io
     #editDialog
         #dialogContent
-            p#dialogValue
-            p(style="margin:3px;font-size:x-small;")
+            p#dialogHead
                 span#dialogXY
-            p(style="margin:0px")
-                button#dialogColor(class="jscolor {valueElement:'dialogColorValue', position:'right'}") Select your color
-            p(style="margin:0px")
-                input#dialogColorValue(type="input" readonly)
-            //- p Your link
-            //-     input#hyperlink
-            //- p Your message
-            //-     input#message
-            p(style="margin:30px 0px 0px") Address:
-                p(style="margin:0px")
-                    input#transferAddress.copyField(type="input" readonly)
-            p(style="margin:10px 0px 5px 0px") Amount at least:
-                p(style="margin:0px")
-                    input#transferIota.copyField(type="input" readonly)
-            p(style="margin:10px 0px 5px 0px") Tag:
-                p(style="margin:0px")
-                    input#transferTag.copyField(type="input" readonly)
-            p(style="margin:30px") Transfer IOTAs to the mentioned address and tag. As soon as the transaction is confirmed, your selected color will be displayed at
-                span#XY
-                | .
+                span#dialogValue
+            #currentContent
+                p(style="margin:10px")
+                    a#currentLink
+                textarea#currentMessage(wrap="soft", readonly, placeholder ="[NO MESSAGE]")
+            #desiredContent
+                p.caption Your color
+                    p.inputValue
+                        button#dialogColor(class="jscolor {valueElement:'dialogColorValue', position:'bottom'}")
+                        input#dialogColorValue(type="input")
+                p.caption Your link (max. 100 characters)
+                    p.inputValue
+                        input#desiredLink.inputField(maxlength="100")
+                p.caption Your message (max. 100 characters)
+                    p.inputValue
+                        input#desiredMessage.inputField(maxlength="100")
+            #transferDescription
+                p.caption Transfer at least
+                    span#Iotas
+                    | IOTAs to the mentioned address and tag. As soon as the transaction is confirmed, your selected color, link and message will be displayed at
+                    span#XY
+                    | . Other can override your settings by overbidding your IOTA value.
+                p.caption Address:
+                    p.inputValue
+                        input#transferAddress.copyField(type="input" readonly)
+                p.caption Amount at least:
+                    p.inputValue
+                        input#transferIota.copyField(type="input" readonly)
+                p.caption Tag:
+                    p.inputValue
+                        input#transferTag.copyField(type="input" readonly)
     //- button(id="save") save

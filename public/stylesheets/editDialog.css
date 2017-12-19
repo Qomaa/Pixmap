@@ -19,25 +19,47 @@
     padding: 20px;
     border: 1px solid #888;
     width: calc(var(--pixmapWidth) * 0.8);
-    text-align: center;
     box-shadow: 0px 0px 50px;
     border-radius: 10px;
 }
 
-#dialogColor{
-    border: 1px solid gray; 
-    width: 125px; 
-    height: 125px; 
-    cursor: pointer;
-}
-#dialogColor:hover,
-#dialogColor:focus{
-    border-color: aqua;
+#dialogHead{
+    margin: 0px 0px 10px 0px;
+    font-size:x-small;
+    text-align: center;
 }
 
+#currentContent{
+    text-align: center;
+    border: 1px solid aqua;
+    margin-bottom:50px;
+    height: 110px;
+    text-align: center;
+}
+
+#currentMessage{
+    width: calc(var(--pixmapWidth) * 0.79);
+    height: 70px;
+    border:none;
+    resize: none;
+    font-size: x-large;
+    text-align: center;
+}
+#currentMessage:hover,
+#currentMessage:focus {
+    border:none;
+}
+
+.caption{
+    font-size: small;
+    margin: 10px 0px 3px 0px;
+}
+
+.inputValue{
+    margin: 0px;
+}
 
 .copyField {
-    text-align: center;
     font-weight: bold;
     border-style: solid;
     border-width: 1px;
@@ -48,27 +70,61 @@
 }
 
 #dialogValue{
-    font-size:x-small;
-    margin: 10px 0px 0px;
+    margin-left: 20px;
+}
+
+#desiredContent{
+    margin-bottom: 50px;
+}
+
+#dialogColor{
+    border: 1px solid gray; 
+    width: 60px; 
+    height: 20px; 
+    cursor: pointer;
+}
+#dialogColor:hover,
+#dialogColor:focus{
+    border-color: aqua;
 }
 
 #dialogColorValue {
-    width:70px;
-    text-align:center;
-    border:none;
-    font-size:x-small;    
+    width: 50px;
+    height: 15px;
+    margin-left: 10px;
+    border: 1px solid gray;
+    vertical-align: super;
+    text-align: center;
+    font-size: x-small;    
+}
+#dialogColorValue:hover,
+#dialogColorValue:focus {
+    border-color:aqua;
+}
+
+.inputField{
+    border: 1px solid gray;
+    width: calc(var(--pixmapWidth) * 0.78);
+    padding-left: 10px;
+}
+.inputField:hover,
+.inputField:focus{
+    border-color: aqua;
 }
 
 #transferAddress{
-    width: calc(var(--pixmapWidth) * 0.8);
+    width: calc(var(--pixmapWidth) * 0.78);
     font-size: x-small;
     height: 18px;
+    padding-left: 10px;
 }
 
 #transferIota{
-    width: calc(var(--pixmapWidth) * 0.2);
+    width: calc(var(--pixmapWidth) * 0.78);
+    padding-left: 10px;
 }
 
 #transferTag{
-    width: calc(var(--pixmapWidth) * 0.4);
+    width: calc(var(--pixmapWidth) * 0.78);
+    padding-left: 10px;
 }

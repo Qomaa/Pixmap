@@ -6,20 +6,21 @@
     padding: 3%;
     margin: 0px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-    background-color: rgb(0, 12, 45)
+    background-color: #b4ffff;
 }
 
 #title {
-    color: aqua;
-    font-size: xx-large;
+    color: #0600ff;
+    font-size: large;
     text-align: center;
     padding-bottom: 50px;
-    text-shadow: 0px 0px 50px aqua;
+    text-shadow: 0px 0px 20px #00ffff;
+    display:none;
 }
 
 #loading{
     display: block;
-    color: aqua;
+    color: #0600ff;
     font-size: large;
     text-align: center;
 }
@@ -29,15 +30,16 @@
     height: var(--pixmapHeight);
     margin: auto;
     border: solid;
-    border-color: #00ffff;
+    border-color: #0600ff;
     border-width: 1px;
     cursor: pointer;
-    box-shadow: 0px 0px 50px #00ffff73;
+    box-shadow: 0px 0px 50px #00ffff;
 }
 
 .mapfield {
     --mapFieldColor: rgba(255, 255, 255, 0);
-
+    
+    position:relative;
     width: var(--mapFieldLength);
     height: var(--mapFieldLength);
     background-color: var(--mapFieldColor);
@@ -45,7 +47,7 @@
     float: left;
 }
 .mapfield:hover {
-    background-color: rgba(0, 214, 252, 0.288);
+    background-color: rgba(0, 214, 252, 0.541);
 }
 
 #footer{
@@ -55,8 +57,8 @@
 
 .footerlink{
     margin: 0px 10px 0px 10px;
-    color: aqua;
+    color:  #0600ff;
 }
 .footerlink:hover{
-    text-shadow: 0px 0px 20px cyan;
+    text-shadow: 0px 0px 20px #00ffff;
 }

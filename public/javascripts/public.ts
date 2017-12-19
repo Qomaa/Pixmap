@@ -7,15 +7,16 @@ window.onload = function () {
     editDialog = new EditDialog();
 
     map = new Pixmap();
-    map.load();
+    // map.load();
+    map.loadTrytes();
 
     loading.style.display = "none";
 
     map.divElement.addEventListener("mousedown", function (e: MouseEvent) {
         //console.log(e);
         let id = (e.target as HTMLDivElement).id;
-        let x: number = +id.substring(1, id.indexOf("y")); /* + heißt "als number" */
-        let y: number = +id.substring(id.indexOf("y") + 1);
+        let x: string = id.substring(1, id.indexOf("y"));
+        let y: string = id.substring(id.indexOf("y") + 1);
 
         editDialog.show(map.mapFields.filter(item => item.x == x && item.y == y)[0]);
     });

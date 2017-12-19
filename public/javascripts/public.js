@@ -5,13 +5,14 @@ window.onload = function () {
     var loading = document.getElementById("loading");
     editDialog = new EditDialog();
     map = new Pixmap();
-    map.load();
+    // map.load();
+    map.loadTrytes();
     loading.style.display = "none";
     map.divElement.addEventListener("mousedown", function (e) {
         //console.log(e);
         var id = e.target.id;
-        var x = +id.substring(1, id.indexOf("y")); /* + heißt "als number" */
-        var y = +id.substring(id.indexOf("y") + 1);
+        var x = id.substring(1, id.indexOf("y"));
+        var y = id.substring(id.indexOf("y") + 1);
         editDialog.show(map.mapFields.filter(function (item) { return item.x == x && item.y == y; })[0]);
     });
     var xhttp = new XMLHttpRequest();
