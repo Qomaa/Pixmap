@@ -4,7 +4,6 @@ extends layout
 block content
     #title= title
     #loading
-    //- #tooltip
     #pixmap
         p#loading loading ...
     p#footer
@@ -25,10 +24,10 @@ block content
                     p.inputValue
                         button#dialogColor(class="jscolor {valueElement:'dialogColorValue', position:'bottom'}")
                         input#dialogColorValue(type="input")
-                p.caption Your link (max. 100 characters)
+                p.caption Your link (starting with http://...)
                     p.inputValue
                         input#desiredLink.inputField(maxlength="100")
-                p.caption Your message (max. 100 characters)
+                p.caption Your message
                     p.inputValue
                         input#desiredMessage.inputField(maxlength="100")
             #transferDescription
