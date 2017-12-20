@@ -1,11 +1,11 @@
 var map;
 var RECEIVE_ADDRESS;
 var editDialog;
+var CLIENT_ID;
 window.onload = function () {
     var loading = document.getElementById("loading");
     editDialog = new EditDialog();
     map = new Pixmap();
-    // map.load();
     map.loadTrytes();
     loading.style.display = "none";
     map.divElement.addEventListener("mousedown", function (e) {
@@ -24,6 +24,15 @@ window.onload = function () {
         RECEIVE_ADDRESS = xhttp.responseText;
     };
     xhttp.send();
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.open("GET", "/getGuid", true);
+    xhttp2.setRequestHeader("Content-Type", "text/html; charset=utf-8");
+    xhttp2.onreadystatechange = function () {
+        if (xhttp2.readyState !== XMLHttpRequest.DONE || xhttp2.status !== 200)
+            return;
+        CLIENT_ID = xhttp2.responseText;
+    };
+    xhttp2.send();
     /* SAVE BUTTON AUCH SETZEN IN: index.pug, app.ts */
     // let saveButton = document.getElementById("save") as HTMLButtonElement;
     // saveButton.addEventListener("click", function(e){

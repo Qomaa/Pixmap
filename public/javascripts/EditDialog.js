@@ -111,6 +111,7 @@ var EditDialog = /** @class */ (function () {
     };
     EditDialog.prototype.storeMessage = function (posX, posY) {
         var message = {
+            clientID: CLIENT_ID,
             x: posX,
             y: posY,
             messageRef: this.messageRef,
@@ -123,6 +124,7 @@ var EditDialog = /** @class */ (function () {
     };
     EditDialog.prototype.storeLink = function (posX, posY) {
         var link = {
+            clientID: CLIENT_ID,
             x: posX,
             y: posY,
             linkRef: this.linkRef,
@@ -136,7 +138,7 @@ var EditDialog = /** @class */ (function () {
     EditDialog.prototype.getNewMessageRef = function (x, y, callback) {
         var self = this;
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/getMessageRef?x=" + x + "&y=" + y, true);
+        xhttp.open("GET", "/getMessageRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
         xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8");
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)
@@ -149,7 +151,7 @@ var EditDialog = /** @class */ (function () {
     EditDialog.prototype.getNewLinkRef = function (x, y, callback) {
         var self = this;
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/getLinkRef?x=" + x + "&y=" + y, true);
+        xhttp.open("GET", "/getLinkRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
         xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8");
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)

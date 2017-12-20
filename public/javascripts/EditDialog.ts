@@ -121,6 +121,7 @@ class EditDialog {
 
     private storeMessage(posX: string, posY: string) {
         let message = {
+            clientID: CLIENT_ID,
             x: posX,
             y: posY,
             messageRef: this.messageRef,
@@ -135,6 +136,7 @@ class EditDialog {
 
     private storeLink(posX: string, posY: string) {
         let link = {
+            clientID: CLIENT_ID,
             x: posX,
             y: posY,
             linkRef: this.linkRef,
@@ -151,7 +153,7 @@ class EditDialog {
         let self = this;
         let xhttp: XMLHttpRequest = new XMLHttpRequest();
 
-        xhttp.open("GET", "/getMessageRef?x=" + x + "&y=" + y, true);
+        xhttp.open("GET", "/getMessageRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
         xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
@@ -165,7 +167,7 @@ class EditDialog {
         let self = this;
         let xhttp: XMLHttpRequest = new XMLHttpRequest();
 
-        xhttp.open("GET", "/getLinkRef?x=" + x + "&y=" + y, true);
+        xhttp.open("GET", "/getLinkRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
         xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
         xhttp.onreadystatechange = function () {
             if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;

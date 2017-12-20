@@ -1,13 +1,14 @@
 ﻿let map: Pixmap;
 let RECEIVE_ADDRESS: string;
 let editDialog: EditDialog;
+let CLIENT_ID: string;
 
 window.onload = function () {
     let loading = document.getElementById("loading");
+
     editDialog = new EditDialog();
 
     map = new Pixmap();
-    // map.load();
     map.loadTrytes();
 
     loading.style.display = "none";
@@ -29,6 +30,15 @@ window.onload = function () {
         RECEIVE_ADDRESS = xhttp.responseText;
     }
     xhttp.send();
+
+    let xhttp2: XMLHttpRequest = new XMLHttpRequest();
+    xhttp2.open("GET", "/getGuid", true);
+    xhttp2.setRequestHeader("Content-Type", "text/html; charset=utf-8")
+    xhttp2.onreadystatechange = function () {
+        if (xhttp2.readyState !== XMLHttpRequest.DONE || xhttp2.status !== 200) return;
+        CLIENT_ID = xhttp2.responseText;
+    }
+    xhttp2.send();
 
     /* SAVE BUTTON AUCH SETZEN IN: index.pug, app.ts */
     // let saveButton = document.getElementById("save") as HTMLButtonElement;

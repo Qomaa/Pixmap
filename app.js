@@ -21,11 +21,19 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 //         if (error) { console.log(error) }
 //     });
 // })
+app.get("/getGuid", function (request, response) {
+    var guid = newGuid();
+    response.send(guid);
+});
 app.post("/storeMessage", function (request, response) {
+    var storedClientID;
+    var clientID = request.body.clientID;
     var messageRef = request.body.messageRef;
     var message = request.body.message;
     var x = request.body.x;
-    var y = request.body.x;
+    var y = request.body.y;
+    if (!isGuid(clientID))
+        return;
     if (x == undefined || x == "")
         return;
     if (y == undefined || y == "")
@@ -34,18 +42,55 @@ app.post("/storeMessage", function (request, response) {
         return;
     if (message == "undefined" || message == null || message == "")
         return;
-    blobSvc.createBlockBlobFromText("pixmapcontainer", "message" + x + y + messageRef, message, function (error, result, servResponse) {
-        if (error) {
+    //Suche Ref
+    blobSvc.getBlobToText("pixmapcontainer", "messageref" + x + y, function (error, mesRef, servRespone) {
+        if (error && error.statusCode == 404) {
+            //Es gibt keine Ref unter der gesendeten Nummer. --> Fehler
+            response.sendStatus(400);
             console.log(error);
+            return;
         }
+        ;
+        //Suche Message mit Ref
+        blobSvc.getBlobToText("pixmapcontainer", "message" + x + y + messageRef, function (error, mes, servRespone) {
+            if (error && error.statusCode == 404) {
+                //Message wurde unter dem Ref noch nicht angelegt --> speichern unter gesendeter ClientID
+                blobSvc.createBlockBlobFromText("pixmapcontainer", "message" + x + y + messageRef, message, function (error, result, servResponse) {
+                    if (error) {
+                        response.sendStatus(500);
+                        console.log(error);
+                        return;
+                    }
+                    response.sendStatus(200);
+                });
+                return;
+            }
+            //Es gibt bereits eine Message unter der Ref. Message ändern sofern die ClientIDs übereinstimmen
+            storedClientID = mesRef.substr(mesRef.indexOf(",") + 1);
+            if (storedClientID != clientID) {
+                response.sendStatus(401);
+                return;
+            }
+            blobSvc.createBlockBlobFromText("pixmapcontainer", "message" + x + y + messageRef, message, function (error, result, servResponse) {
+                if (error) {
+                    response.sendStatus(500);
+                    console.log(error);
+                    return;
+                }
+                response.sendStatus(200);
+            });
+        });
     });
-    response.sendStatus(200);
 });
 app.post("/storeLink", function (request, response) {
+    var storedClientID;
+    var clientID = request.body.clientID;
     var linkRef = request.body.linkRef;
     var link = request.body.link;
     var x = request.body.x;
-    var y = request.body.x;
+    var y = request.body.y;
+    if (!isGuid(clientID))
+        return;
     if (x == undefined || x == "")
         return;
     if (y == undefined || y == "")
@@ -54,12 +99,45 @@ app.post("/storeLink", function (request, response) {
         return;
     if (link == "undefined" || link == null || link == "")
         return;
-    blobSvc.createBlockBlobFromText("pixmapcontainer", "link" + x + y + linkRef, link, function (error, result, servResponse) {
-        if (error) {
+    //Suche Ref
+    blobSvc.getBlobToText("pixmapcontainer", "linkref" + x + y, function (error, linRef, servRespone) {
+        if (error && error.statusCode == 404) {
+            //Es gibt keine Ref unter der gesendeten Nummer. --> Fehler
+            response.sendStatus(400);
             console.log(error);
+            return;
         }
+        ;
+        //Suche Link mit Ref
+        blobSvc.getBlobToText("pixmapcontainer", "link" + x + y + linkRef, function (error, lin, servRespone) {
+            if (error && error.statusCode == 404) {
+                //link wurde unter dem Ref noch nicht angelegt --> speichern unter gesendeter ClientID
+                blobSvc.createBlockBlobFromText("pixmapcontainer", "link" + x + y + linkRef, link, function (error, result, servResponse) {
+                    if (error) {
+                        response.sendStatus(500);
+                        console.log(error);
+                        return;
+                    }
+                    response.sendStatus(200);
+                });
+                return;
+            }
+            //Es gibt bereits eine link unter der Ref. link ändern sofern die ClientIDs übereinstimmen
+            storedClientID = linRef.substring(linRef.indexOf(",") + 1);
+            if (storedClientID != clientID) {
+                response.sendStatus(401);
+                return;
+            }
+            blobSvc.createBlockBlobFromText("pixmapcontainer", "link" + x + y + linkRef, link, function (error, result, servResponse) {
+                if (error) {
+                    response.sendStatus(500);
+                    console.log(error);
+                    return;
+                }
+                response.sendStatus(200);
+            });
+        });
     });
-    response.sendStatus(200);
 });
 app.get("/loadMessage", function (request, response) {
     var x = request.query.x;
@@ -101,28 +179,35 @@ app.get("/loadLink", function (request, response) {
 });
 app.get("/getMessageRef", function (request, response) {
     //max. 282429536480
+    var clientID = request.query.clientID;
     var x = request.query.x;
     var y = request.query.y;
+    if (!isGuid(clientID))
+        return;
     if (x == undefined || x == "")
         return;
     if (y == undefined || y == "")
         return;
+    //Suchen des Ref an angegeben Pos
     blobSvc.getBlobToText("pixmapcontainer", "messageref" + x + y, function (error, messageCount, servRespone) {
         if (error && error.statusCode == 404) {
-            blobSvc.createBlockBlobFromText("pixmapcontainer", "messageref" + x + y, "1", function (error, result, servResponse) {
+            //Nicht gefunden --> anlegen mit "1,clientgiud"
+            blobSvc.createBlockBlobFromText("pixmapcontainer", "messageref" + x + y, "1," + clientID, function (error, result, servResponse) {
                 if (error) {
                     console.error(error);
                     response.sendStatus(500);
                     return;
                 }
-                response.send("1");
+                response.send("1"); //MesRef 1 zurückgeben
             });
             return;
         }
         ;
         //console.log(JSON.parse(text));
+        messageCount = messageCount.slice(0, messageCount.indexOf(","));
         messageCount = String(Number(messageCount) + 1);
-        blobSvc.createBlockBlobFromText("pixmapcontainer", "messageref" + x + y, messageCount, function (error, result, servResponse) {
+        blobSvc.createBlockBlobFromText("pixmapcontainer", "messageref" + x + y, messageCount + "," + clientID, function (error, result, servResponse) {
+            //Anlegen des nächst höheren Refs mit gegebener ClinetGuid
             if (error) {
                 console.error(error);
                 response.sendStatus(500);
@@ -134,33 +219,35 @@ app.get("/getMessageRef", function (request, response) {
 });
 app.get("/getLinkRef", function (request, response) {
     //max. 282429536480
+    var clientID = request.query.clientID;
     var x = request.query.x;
     var y = request.query.y;
+    if (!isGuid(clientID))
+        return;
     if (x == undefined || x == "")
         return;
     if (y == undefined || y == "")
         return;
+    //Suchen des Ref an angegeben Pos
     blobSvc.getBlobToText("pixmapcontainer", "linkref" + x + y, function (error, linkCount, servRespone) {
         if (error && error.statusCode == 404) {
-            blobSvc.createBlockBlobFromText("pixmapcontainer", "linkref" + x + y, "1", function (error, result, servResponse) {
+            //Nicht gefunden --> anlegen mit "1,clientgiud"
+            blobSvc.createBlockBlobFromText("pixmapcontainer", "linkref" + x + y, "1," + clientID, function (error, result, servResponse) {
                 if (error) {
                     console.error(error);
                     response.sendStatus(500);
                     return;
                 }
-                response.send("1");
+                response.send("1"); //MesRef 1 zurückgeben
             });
             return;
         }
         ;
-        if (error) {
-            console.error(error);
-            response.send(500);
-            return;
-        }
         //console.log(JSON.parse(text));
+        linkCount = linkCount.slice(0, linkCount.indexOf(","));
         linkCount = String(Number(linkCount) + 1);
-        blobSvc.createBlockBlobFromText("pixmapcontainer", "linkref" + x + y, linkCount, function (error, result, servResponse) {
+        blobSvc.createBlockBlobFromText("pixmapcontainer", "linkref" + x + y, linkCount + "," + clientID, function (error, result, servResponse) {
+            //Anlegen des nächst höheren Refs mit gegebener ClinetGuid
             if (error) {
                 console.error(error);
                 response.sendStatus(500);
@@ -214,6 +301,17 @@ app.set('port', process.env.PORT || 80);
 var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
-function getNextref(filepath) {
+function newGuid() {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    }
+    return s4() + s4() + '-' + s4() + '-' + "4" + s4().substring(1) + '-' +
+        "8" + s4().substring(1) + '-' + s4() + s4() + s4();
+}
+function isGuid(guid) {
+    var reg = new RegExp("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
+    return reg.test(guid);
 }
 //# sourceMappingURL=app.js.map
