@@ -11,6 +11,7 @@ var EditDialog = /** @class */ (function () {
         this.transferTag = document.getElementById("transferTag");
         this.desiredLink = document.getElementById("desiredLink");
         this.desiredMessage = document.getElementById("desiredMessage");
+        this.currentContent = document.getElementById("currentContent");
         this.currentLink = document.getElementById("currentLink");
         this.currentMessage = document.getElementById("currentMessage");
         this.transferAddress.addEventListener("click", function (e) { return _this.transferAddress.select(); });
@@ -28,7 +29,12 @@ var EditDialog = /** @class */ (function () {
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
         this.value.textContent = mapField.value.toString() + "i";
         mapField.loadMessage(function (message) {
-            self.currentMessage.textContent = message;
+            if (message == "") {
+                self.currentContent.style.display = "none";
+                return;
+            }
+            self.currentContent.style.display = "block";
+            self.currentMessage.value = message;
         });
         mapField.loadLink(function (link) {
             self.currentLink.href = link;
@@ -49,11 +55,6 @@ var EditDialog = /** @class */ (function () {
             var link = self.desiredLink.value;
             if (self.desiredLink.value == "")
                 return;
-            // if (!httpRegEx.test(link)) {
-            //     // not valid
-            //     self.desiredLink.style.borderColor = "red";
-            //     return;
-            // }
             if (self.linkRef == undefined) {
                 self.getNewLinkRef(mapField.x, mapField.y, function () {
                     self.storeLink(mapField.x, mapField.y);
@@ -91,6 +92,8 @@ var EditDialog = /** @class */ (function () {
         this.linkRef = undefined;
         this.desiredLink.value = "";
         this.desiredMessage.value = "";
+        this.currentMessage.value = "";
+        this.currentLink.textContent = "";
     };
     EditDialog.prototype.updateTag = function (mapField) {
         var tag;

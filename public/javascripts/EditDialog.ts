@@ -10,9 +10,10 @@ class EditDialog {
         this.transferTag = document.getElementById("transferTag") as HTMLInputElement;
         this.desiredLink = document.getElementById("desiredLink") as HTMLInputElement;
         this.desiredMessage = document.getElementById("desiredMessage") as HTMLInputElement;
+        this.currentContent = document.getElementById("currentContent") as HTMLDivElement;
         this.currentLink = document.getElementById("currentLink") as HTMLLinkElement;
         this.currentMessage = document.getElementById("currentMessage") as HTMLTextAreaElement;
-        
+
         this.transferAddress.addEventListener("click", e => this.transferAddress.select());
         this.transferTag.addEventListener("click", e => this.transferTag.select());
         this.transferIota.addEventListener("click", e => {
@@ -29,7 +30,12 @@ class EditDialog {
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
         this.value.textContent = mapField.value.toString() + "i";
         mapField.loadMessage(function (message: string) {
-            self.currentMessage.textContent = message;
+            if (message == "") {
+                self.currentContent.style.display = "none";
+                return;
+            }
+            self.currentContent.style.display = "block";
+            self.currentMessage.value = message;
         });
         mapField.loadLink(function (link: string) {
             self.currentLink.href = link;
@@ -50,13 +56,6 @@ class EditDialog {
         this.desiredLink.onblur = e => {
             let link = self.desiredLink.value;
             if (self.desiredLink.value == "") return;
-
-            // if (!httpRegEx.test(link)) {
-            //     // not valid
-            //     self.desiredLink.style.borderColor = "red";
-            //     return;
-            // }
-
             if (self.linkRef == undefined) {
                 self.getNewLinkRef(mapField.x, mapField.y, () => {
                     self.storeLink(mapField.x, mapField.y);
@@ -97,6 +96,8 @@ class EditDialog {
         this.linkRef = undefined;
         this.desiredLink.value = "";
         this.desiredMessage.value = "";
+        this.currentMessage.value = "";
+        this.currentLink.textContent = "";
     }
 
     private updateTag(mapField: MapField) {
@@ -184,6 +185,7 @@ class EditDialog {
     private xy: HTMLSpanElement;
     private iotas: HTMLSpanElement;
     private value: HTMLSpanElement;
+    private currentContent: HTMLDivElement;
     private currentMessage: HTMLTextAreaElement;
     private currentLink: HTMLLinkElement;
 
