@@ -112,6 +112,13 @@
     border-color: aqua;
 }
 
+#linkError {
+    display: none;
+    font-size: xx-small;
+    color: red;
+    margin: 0px;
+}
+
 #transferAddress{
     width: calc(var(--pixmapWidth) * 0.78);
     font-size: x-small;

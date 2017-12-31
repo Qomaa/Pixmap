@@ -1,18 +1,19 @@
 class EditDialog {
     constructor() {
-        this.dialogDiv = document.getElementById("editDialog") as HTMLDivElement;
-        this.position = document.getElementById("dialogXY") as HTMLSpanElement;
-        this.xy = document.getElementById("XY") as HTMLSpanElement;
-        this.iotas = document.getElementById("Iotas") as HTMLSpanElement;
-        this.value = document.getElementById("dialogValue") as HTMLSpanElement;
-        this.transferIota = document.getElementById("transferIota") as HTMLInputElement;
-        this.transferAddress = document.getElementById("transferAddress") as HTMLInputElement;
-        this.transferTag = document.getElementById("transferTag") as HTMLInputElement;
-        this.desiredLink = document.getElementById("desiredLink") as HTMLInputElement;
-        this.desiredMessage = document.getElementById("desiredMessage") as HTMLInputElement;
-        this.currentContent = document.getElementById("currentContent") as HTMLDivElement;
-        this.currentLink = document.getElementById("currentLink") as HTMLLinkElement;
-        this.currentMessage = document.getElementById("currentMessage") as HTMLTextAreaElement;
+        this.dialogDiv = document.querySelector("#editDialog");
+        this.position = document.querySelector("#dialogXY");
+        this.xy = document.querySelector("#XY");
+        this.iotas = document.querySelector("#iotas");
+        this.value = document.querySelector("#dialogValue");
+        this.transferIota = document.querySelector("#transferIota");
+        this.transferAddress = document.querySelector("#transferAddress");
+        this.transferTag = document.querySelector("#transferTag");
+        this.linkError = document.querySelector("#linkError");
+        this.desiredLink = document.querySelector("#desiredLink");
+        this.desiredMessage = document.querySelector("#desiredMessage");
+        this.currentContent = document.querySelector("#currentContent");
+        this.currentLink = document.querySelector("#currentLink");
+        this.currentMessage = document.querySelector("#currentMessage");
 
         this.transferAddress.addEventListener("click", e => this.transferAddress.select());
         this.transferTag.addEventListener("click", e => this.transferTag.select());
@@ -24,7 +25,7 @@ class EditDialog {
 
     show(mapField: MapField) {
         let self = this;
-        let httpRegEx = new RegExp("/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/");
+        let urlRegEx = new RegExp(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i);
 
         //Current values
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
@@ -39,8 +40,8 @@ class EditDialog {
         });
         mapField.loadLink(function (link: string) {
             self.currentLink.href = link;
-            if (link.length > 50) {
-                link = link.substring(0, 50) + "...";
+            if (link.length > 80) {
+                link = link.substring(0, 80) + "...";
             }
             self.currentLink.textContent = link;
         });
@@ -55,7 +56,15 @@ class EditDialog {
         this.colorHex = this.colorButton.jscolor.toHEXString();
         this.desiredLink.onblur = e => {
             let link = self.desiredLink.value;
-            if (self.desiredLink.value == "") return;
+            if (link == "") return;
+
+            if (!urlRegEx.test(link)) {
+                self.linkError.style.display = "block";
+            }
+            else {
+                self.linkError.style.display = "none";
+            }
+
             if (self.linkRef == undefined) {
                 self.getNewLinkRef(mapField.x, mapField.y, () => {
                     self.storeLink(mapField.x, mapField.y);
@@ -89,8 +98,6 @@ class EditDialog {
     }
 
     hide() {
-        this.dialogDiv.style.display = "none";
-
         //Reset values
         this.messageRef = undefined;
         this.linkRef = undefined;
@@ -98,6 +105,9 @@ class EditDialog {
         this.desiredMessage.value = "";
         this.currentMessage.value = "";
         this.currentLink.textContent = "";
+        this.linkError.style.display = "none";
+        
+        this.dialogDiv.style.display = "none";
     }
 
     private updateTag(mapField: MapField) {
@@ -193,8 +203,8 @@ class EditDialog {
     private transferAddress: HTMLInputElement;
     private transferTag: HTMLInputElement;
 
-
     private desiredLink: HTMLInputElement;
+    private linkError: HTMLParagraphElement;
     private desiredMessage: HTMLInputElement;
 
     private linkRef: number;

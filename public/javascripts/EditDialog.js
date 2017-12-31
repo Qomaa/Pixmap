@@ -1,19 +1,20 @@
 var EditDialog = /** @class */ (function () {
     function EditDialog() {
         var _this = this;
-        this.dialogDiv = document.getElementById("editDialog");
-        this.position = document.getElementById("dialogXY");
-        this.xy = document.getElementById("XY");
-        this.iotas = document.getElementById("Iotas");
-        this.value = document.getElementById("dialogValue");
-        this.transferIota = document.getElementById("transferIota");
-        this.transferAddress = document.getElementById("transferAddress");
-        this.transferTag = document.getElementById("transferTag");
-        this.desiredLink = document.getElementById("desiredLink");
-        this.desiredMessage = document.getElementById("desiredMessage");
-        this.currentContent = document.getElementById("currentContent");
-        this.currentLink = document.getElementById("currentLink");
-        this.currentMessage = document.getElementById("currentMessage");
+        this.dialogDiv = document.querySelector("#editDialog");
+        this.position = document.querySelector("#dialogXY");
+        this.xy = document.querySelector("#XY");
+        this.iotas = document.querySelector("#iotas");
+        this.value = document.querySelector("#dialogValue");
+        this.transferIota = document.querySelector("#transferIota");
+        this.transferAddress = document.querySelector("#transferAddress");
+        this.transferTag = document.querySelector("#transferTag");
+        this.linkError = document.querySelector("#linkError");
+        this.desiredLink = document.querySelector("#desiredLink");
+        this.desiredMessage = document.querySelector("#desiredMessage");
+        this.currentContent = document.querySelector("#currentContent");
+        this.currentLink = document.querySelector("#currentLink");
+        this.currentMessage = document.querySelector("#currentMessage");
         this.transferAddress.addEventListener("click", function (e) { return _this.transferAddress.select(); });
         this.transferTag.addEventListener("click", function (e) { return _this.transferTag.select(); });
         this.transferIota.addEventListener("click", function (e) {
@@ -24,7 +25,7 @@ var EditDialog = /** @class */ (function () {
     EditDialog.prototype.show = function (mapField) {
         var _this = this;
         var self = this;
-        var httpRegEx = new RegExp("/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/");
+        var urlRegEx = new RegExp(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i);
         //Current values
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
         this.value.textContent = mapField.value.toString() + "i";
@@ -38,8 +39,8 @@ var EditDialog = /** @class */ (function () {
         });
         mapField.loadLink(function (link) {
             self.currentLink.href = link;
-            if (link.length > 50) {
-                link = link.substring(0, 50) + "...";
+            if (link.length > 80) {
+                link = link.substring(0, 80) + "...";
             }
             self.currentLink.textContent = link;
         });
@@ -53,8 +54,14 @@ var EditDialog = /** @class */ (function () {
         this.colorHex = this.colorButton.jscolor.toHEXString();
         this.desiredLink.onblur = function (e) {
             var link = self.desiredLink.value;
-            if (self.desiredLink.value == "")
+            if (link == "")
                 return;
+            if (!urlRegEx.test(link)) {
+                self.linkError.style.display = "block";
+            }
+            else {
+                self.linkError.style.display = "none";
+            }
             if (self.linkRef == undefined) {
                 self.getNewLinkRef(mapField.x, mapField.y, function () {
                     self.storeLink(mapField.x, mapField.y);
@@ -86,7 +93,6 @@ var EditDialog = /** @class */ (function () {
         this.dialogDiv.style.display = "block";
     };
     EditDialog.prototype.hide = function () {
-        this.dialogDiv.style.display = "none";
         //Reset values
         this.messageRef = undefined;
         this.linkRef = undefined;
@@ -94,6 +100,8 @@ var EditDialog = /** @class */ (function () {
         this.desiredMessage.value = "";
         this.currentMessage.value = "";
         this.currentLink.textContent = "";
+        this.linkError.style.display = "none";
+        this.dialogDiv.style.display = "none";
     };
     EditDialog.prototype.updateTag = function (mapField) {
         var tag;

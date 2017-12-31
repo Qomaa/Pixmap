@@ -25,7 +25,8 @@ block content
                     p.inputValue
                         button#dialogColor(class="jscolor {valueElement:'dialogColorValue', position:'bottom'}")
                         input#dialogColorValue(type="input")
-                p.caption Your link (starting with http://...)
+                p.caption Your link
+                    p#linkError Invalid URL. Make sure your URL starts with http(s)://... You can post an invalid URL if you want to.
                     p.inputValue
                         input#desiredLink.inputField(maxlength="100")
                 p.caption Your message
@@ -33,7 +34,7 @@ block content
                         input#desiredMessage.inputField(maxlength="100")
             #transferDescription
                 p.caption Transfer at least
-                    span#Iotas
+                    span#iotas
                     | IOTAs to the mentioned address and tag. As soon as the transaction is confirmed, your selected color, link and message will be displayed at
                     span#XY
                     | . Others can override your settings by overbidding your IOTA value.
