@@ -61,6 +61,8 @@ var MapField = /** @class */ (function () {
         return this.divElement;
     };
     MapField.prototype.loadMessage = function (callback) {
+        if (this.messageRef == undefined)
+            return;
         var self = this;
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", "/loadMessage?messageRef=" + this.messageRef + "&x=" + this.x + "&y=" + this.y, true);
@@ -73,6 +75,8 @@ var MapField = /** @class */ (function () {
         xhttp.send();
     };
     MapField.prototype.loadLink = function (callback) {
+        if (this.linkRef == undefined)
+            return;
         var self = this;
         var xhttp = new XMLHttpRequest();
         xhttp.open("GET", "/loadLink?linkRef=" + this.linkRef + "&x=" + this.x + "&y=" + this.y, true);

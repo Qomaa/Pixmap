@@ -1,20 +1,6 @@
 ﻿class Pixmap {
     constructor() { }
 
-    // save() {
-    //     let mapString = JSON.stringify(this, function (key: string, value: any) {
-    //         if (key === "divElement" || key === "pixmap") return undefined;
-    //         return value;
-    //     });
-
-    //     let m = JSON.parse(mapString);
-
-    //     let xhttp: XMLHttpRequest = new XMLHttpRequest();
-    //     xhttp.open("POST", "/mapsave", true);
-    //     xhttp.setRequestHeader("Content-Type", "application/json")
-    //     xhttp.send(mapString);
-    //     //console.log(mapString);
-    // }
     saveTrytes(){
         let mapString = JSON.stringify(this, function (key: string, value: any) {
             if (key === "divElement" || key === "pixmap") return undefined;

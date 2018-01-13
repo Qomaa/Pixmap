@@ -70,9 +70,11 @@
     }
 
     loadMessage(callback: (message: string) => void) {
+        if (this.messageRef == undefined) return;
+
         let self = this;
         let xhttp: XMLHttpRequest = new XMLHttpRequest();
-
+        
         xhttp.open("GET", "/loadMessage?messageRef=" + this.messageRef + "&x=" + this.x + "&y=" + this.y, true);
         xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
         xhttp.onreadystatechange = function () {
@@ -83,6 +85,8 @@
     }
 
     loadLink(callback: (link: string) => void) {
+        if (this.linkRef == undefined) return;
+
         let self = this;
         let xhttp: XMLHttpRequest = new XMLHttpRequest();
 

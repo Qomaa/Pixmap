@@ -3,18 +3,6 @@ var Pixmap = /** @class */ (function () {
         this.divElement = document.getElementById("pixmap");
         this.mapFields = new Array();
     }
-    // save() {
-    //     let mapString = JSON.stringify(this, function (key: string, value: any) {
-    //         if (key === "divElement" || key === "pixmap") return undefined;
-    //         return value;
-    //     });
-    //     let m = JSON.parse(mapString);
-    //     let xhttp: XMLHttpRequest = new XMLHttpRequest();
-    //     xhttp.open("POST", "/mapsave", true);
-    //     xhttp.setRequestHeader("Content-Type", "application/json")
-    //     xhttp.send(mapString);
-    //     //console.log(mapString);
-    // }
     Pixmap.prototype.saveTrytes = function () {
         var mapString = JSON.stringify(this, function (key, value) {
             if (key === "divElement" || key === "pixmap")

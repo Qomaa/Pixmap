@@ -154,12 +154,16 @@ app.get("/loadMessage", function (request, response) {
     if (messageRef == "undefined" || messageRef == "" ||
         x == undefined || x == "" ||
         y == undefined || y == "") {
-        response.send("");
+        response.sendStatus(400);
         return;
     }
 
     blobSvc.getBlobToText("pixmapcontainer", "message" + x + y + messageRef, function (error, message, servRespone) {
-        if (error) { console.log(error) };
+        if (error) {
+            console.error(error);
+            response.sendStatus(404);
+            return;
+        };
         //console.log(JSON.parse(text));
         response.send(message);
     });
@@ -173,12 +177,16 @@ app.get("/loadLink", function (request, response) {
     if (linkRef == "undefined" || linkRef == "" ||
         x == undefined || x == "" ||
         y == undefined || y == "") {
-        response.send("");
+        response.sendStatus(400);
         return;
     }
 
     blobSvc.getBlobToText("pixmapcontainer", "link" + x + y + linkRef, function (error, link, servRespone) {
-        if (error) { console.log(error) };
+        if (error) {
+            console.error(error);
+            response.sendStatus(404);
+            return;
+        };
         //console.log(JSON.parse(text));
         response.send(link);
     });
