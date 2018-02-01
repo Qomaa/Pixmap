@@ -29,21 +29,9 @@ var EditDialog = /** @class */ (function () {
         //Current values
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
         this.value.textContent = mapField.value.toString() + "i";
-        mapField.loadMessage(function (message) {
-            if (message == "") {
-                self.currentContent.style.display = "none";
-                return;
-            }
-            self.currentContent.style.display = "block";
-            self.currentMessage.value = message;
-        });
-        mapField.loadLink(function (link) {
-            self.currentLink.href = link;
-            if (link.length > 80) {
-                link = link.substring(0, 80) + "...";
-            }
-            self.currentLink.textContent = link;
-        });
+        this.currentContent.style.display = "none";
+        mapField.loadMessage(self.displayMessage);
+        mapField.loadLink(self.displayLink);
         //User desired values
         this.colorButton = document.getElementById("dialogColor");
         this.colorButton.jscolor.onFineChange = function () {
@@ -52,16 +40,13 @@ var EditDialog = /** @class */ (function () {
         };
         this.colorButton.jscolor.fromString(mapField.color);
         this.colorHex = this.colorButton.jscolor.toHEXString();
+        this.linkError.style.display = "none";
         this.desiredLink.onblur = function (e) {
             var link = self.desiredLink.value;
             if (link == "")
                 return;
-            if (!urlRegEx.test(link)) {
+            if (!urlRegEx.test(link))
                 self.linkError.style.display = "block";
-            }
-            else {
-                self.linkError.style.display = "none";
-            }
             if (self.linkRef == undefined) {
                 self.getNewLinkRef(mapField.x, mapField.y, function () {
                     self.storeLink(mapField.x, mapField.y);
@@ -119,6 +104,22 @@ var EditDialog = /** @class */ (function () {
             link = pad(numberToTrytes(this.linkRef), 8, "9");
         tag = pad(mapField.x, 2, "9") + pad(mapField.y, 2, "9") + r + g + b + message + link;
         this.transferTag.value = tag;
+    };
+    EditDialog.prototype.displayMessage = function (message) {
+        if (message == "")
+            return;
+        this.currentContent.style.display = "block";
+        this.currentMessage.value = message;
+    };
+    EditDialog.prototype.displayLink = function (link) {
+        if (link == "")
+            return;
+        this.currentContent.style.display = "block";
+        this.currentLink.href = link;
+        if (link.length > 80) {
+            link = link.substring(0, 80) + "...";
+        }
+        this.currentLink.textContent = link;
     };
     EditDialog.prototype.storeMessage = function (posX, posY) {
         var message = {

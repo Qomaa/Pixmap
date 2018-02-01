@@ -5,7 +5,7 @@ block content
     #title
         img(src="/images/favicon.png", alt="iota.show logo", style="margin:5px;")
         span= title
-    p(style="font-size:small;text-align:center;color:#0600ff;") Click on a dot to change its color. You can also write a message and post a link.
+    p(style="font-size:small;text-align:center;color:#0600ff;padding-bottom:20px;margin-top:0px;") Click on a dot to change its color. You can also write a message and post a link.
     #loading
     #pixmap
         p#loading loading ...
@@ -21,7 +21,7 @@ block content
             #currentContent
                 p(style="margin:10px")
                     a#currentLink
-                textarea#currentMessage(wrap="soft", readonly, placeholder ="[NO MESSAGE]")
+                textarea#currentMessage(wrap="soft", readonly)
             #desiredContent
                 p.caption Your color
                     p.inputValue

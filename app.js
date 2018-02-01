@@ -152,7 +152,7 @@ app.get("/loadMessage", function (request, response) {
     blobSvc.getBlobToText("pixmapcontainer", "message" + x + y + messageRef, function (error, message, servRespone) {
         if (error) {
             console.error(error);
-            response.sendStatus(404);
+            response.send("");
             return;
         }
         ;
@@ -173,7 +173,7 @@ app.get("/loadLink", function (request, response) {
     blobSvc.getBlobToText("pixmapcontainer", "link" + x + y + linkRef, function (error, link, servRespone) {
         if (error) {
             console.error(error);
-            response.sendStatus(404);
+            response.send("");
             return;
         }
         ;
