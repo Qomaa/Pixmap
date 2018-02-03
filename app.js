@@ -274,6 +274,20 @@ app.get("/maploadtrytes", function (request, response) {
         response.send(JSON.parse(text));
     });
 });
+// app.get("/getmap", function (request, response) {
+//     blobSvc.getBlobToText("pixmapcontainer", "pixmapblobtrytes", function (error, text, servRespone) {
+//         if (error) {
+//             console.log(error);
+//             return;
+//         };
+//         let p = new Pixmap();
+//         p.generateMapPNG(JSON.parse(text), callback() {
+//             response.send(png);
+//         });
+//         //console.log(JSON.parse(text));
+//         //response.send(JSON.parse(text));
+//     });
+// });
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
