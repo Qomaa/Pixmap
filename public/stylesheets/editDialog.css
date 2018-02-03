@@ -38,7 +38,7 @@
 }
 
 #currentMessage{
-    width: calc(var(--pixmapWidth) * 0.79);
+    width: calc(var(--pixmapWidth) * 0.75);
     height: 70px;
     border:none;
     resize: none;
