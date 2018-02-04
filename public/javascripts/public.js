@@ -44,4 +44,10 @@ window.onclick = function (event) {
         editDialog.hide();
     }
 };
+document.onkeydown = function (event) {
+    if (event.keyCode == 27) {
+        // 27 = escape
+        editDialog.hide();
+    }
+};
 //# sourceMappingURL=public.js.map
