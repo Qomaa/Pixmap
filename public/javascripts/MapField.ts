@@ -1,12 +1,13 @@
 ﻿class MapField {
-    constructor(x: string, y: string, color: string, value: number, pixmap: Pixmap, linkref: string, messageRef: string) {
+    constructor(x: string, y: string, color: string, value: number, message: string, link: string, pixmap: Pixmap) {
         this.x = x;
         this.y = y;
         this.pixmap = pixmap;
         this.color = color;
         this.value = value;
-        this.linkRef = linkref;
-        this.messageRef = messageRef;
+        this.message = message;
+        this.link = link;
+        // this.linkRef = linkref;
     }
 
     getDivElement(): HTMLDivElement {
@@ -69,48 +70,12 @@
         return this.divElement;
     }
 
-    loadMessage(callback: (message: string) => void) {
-        if (this.messageRef == undefined){
-            callback("");
-            return;
-        } 
-
-        let self = this;
-        let xhttp: XMLHttpRequest = new XMLHttpRequest();
-
-        xhttp.open("GET", "/loadMessage?messageRef=" + this.messageRef + "&x=" + this.x + "&y=" + this.y, true);
-        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
-            callback(xhttp.responseText);
-        }
-        xhttp.send();
-    }
-
-    loadLink(callback: (link: string) => void) {
-        if (this.linkRef == undefined) {
-            callback("");
-            return;
-        }
-
-        let self = this;
-        let xhttp: XMLHttpRequest = new XMLHttpRequest();
-
-        xhttp.open("GET", "/loadLink?linkRef=" + this.linkRef + "&x=" + this.x + "&y=" + this.y, true);
-        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
-            callback(xhttp.responseText);
-        }
-        xhttp.send();
-    }
-
     private divElement: HTMLDivElement;
     pixmap: Pixmap;
     x: string;
     y: string;
     color: string;
     value: number;
-    linkRef: string;
-    messageRef: string;
+    message: string;
+    link: string;
 }

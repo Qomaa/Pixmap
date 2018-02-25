@@ -1,12 +1,12 @@
 var map;
 var RECEIVE_ADDRESS;
-var editDialog;
 var CLIENT_ID;
+var editDialog;
 window.onload = function () {
     var loading = document.getElementById("loading");
     editDialog = new EditDialog();
     map = new Pixmap();
-    map.loadTrytes();
+    map.load();
     loading.style.display = "none";
     map.divElement.addEventListener("mousedown", function (e) {
         //console.log(e);

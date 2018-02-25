@@ -30,9 +30,7 @@ class EditDialog {
         //Current values
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
         this.value.textContent = mapField.value.toString() + "i";
-        this.currentContent.style.display = "none";
-        mapField.loadMessage(self.displayMessage);
-        mapField.loadLink(self.displayLink);
+        this.displayMessage(mapField.message, mapField.link);
 
         //User desired values
         this.colorButton = document.getElementById("dialogColor");
@@ -43,32 +41,18 @@ class EditDialog {
         this.colorButton.jscolor.fromString(mapField.color);
         this.colorHex = this.colorButton.jscolor.toHEXString();
         this.linkError.style.display = "none";
-        this.desiredLink.onblur = e => {
+        this.desiredLink.onblur = function updateLink(e) {
             let link = self.desiredLink.value;
             if (link == "") return;
 
             if (!urlRegEx.test(link))
                 self.linkError.style.display = "block";
 
-            if (self.linkRef == undefined) {
-                self.getNewLinkRef(mapField.x, mapField.y, () => {
-                    self.storeLink(mapField.x, mapField.y);
-                    self.updateTag(mapField);
-                });
-                return;
-            }
-            self.storeLink(mapField.x, mapField.y);
+            self.updateMessage(self, mapField);
         }
-        this.desiredMessage.onblur = e => {
+        this.desiredMessage.onblur = function updateMessage(e) {
             if (self.desiredMessage.value == "") return;
-            if (self.messageRef == undefined) {
-                self.getNewMessageRef(mapField.x, mapField.y, () => {
-                    self.storeMessage(mapField.x, mapField.y);
-                    self.updateTag(mapField);
-                });
-                return;
-            }
-            self.storeMessage(mapField.x, mapField.y);
+            self.updateMessage(self, mapField);
         }
 
         //Transfer/Description
@@ -84,8 +68,7 @@ class EditDialog {
 
     hide() {
         //Reset values
-        this.messageRef = undefined;
-        this.linkRef = undefined;
+        this.messageNum = undefined;
         this.desiredLink.value = "";
         this.desiredMessage.value = "";
         this.currentMessage.value = "";
@@ -100,95 +83,76 @@ class EditDialog {
         let r: string;
         let g: string;
         let b: string;
-        let message: string = "99999999";
-        let link: string = "99999999";
+        let message: string = "9999999999999999";
 
         r = pad(numberToTrytes(parseInt(this.colorHex.substring(1, 3), 16)), 2, "9");
         g = pad(numberToTrytes(parseInt(this.colorHex.substring(3, 5), 16)), 2, "9");
         b = pad(numberToTrytes(parseInt(this.colorHex.substring(5, 7), 16)), 2, "9");
 
-        if (this.messageRef != undefined) message = pad(numberToTrytes(this.messageRef), 8, "9");
-        if (this.linkRef != undefined) link = pad(numberToTrytes(this.linkRef), 8, "9");
+        if (this.messageNum != undefined) message = pad(numberToTrytes(this.messageNum), 16, "9");
 
-        tag = pad(mapField.x, 2, "9") + pad(mapField.y, 2, "9") + r + g + b + message + link;
+        tag = pad(mapField.x, 2, "9") + pad(mapField.y, 2, "9") + r + g + b + message;
 
         this.transferTag.value = tag;
     }
 
-    private displayMessage(message: string) {
-        if (message == "") return;
-        this.currentContent.style.display = "block";
-        this.currentMessage.value = message;
-    }
-
-    private displayLink(link: string) {
-        if (link == "") return;
-
-        this.currentContent.style.display = "block";
+    private displayMessage(message: string, link: string) {
+        this.currentContent.style.display = "none";
         
-        this.currentLink.href = link;
-        if (link.length > 80) {
-            link = link.substring(0, 80) + "...";
+        if (message != undefined && message != "") {
+            this.currentContent.style.display = "block";
+            this.currentMessage.value = message;
         }
-        this.currentLink.textContent = link;
+
+        if (link != undefined && link != "") {
+            this.currentContent.style.display = "block";
+
+            this.currentLink.href = link;
+            if (link.length > 80) {
+                link = link.substring(0, 80) + "...";
+            }
+            this.currentLink.textContent = link;
+        }
     }
 
+    private updateMessage(self: any, mapField: MapField) {
+        if (self.messageNum == undefined) {
+            self.getNewMsgRef(mapField.x, mapField.y, () => {
+                self.storeMessage(mapField.x, mapField.y);
+                self.updateTag(mapField);
+            });
+        } else {
+            self.storeMessage(mapField.x, mapField.y);
+        }
+    }
+
+    private getNewMsgRef(x: string, y: string, callback: () => void) {
+        let self = this;
+        let xhttp: XMLHttpRequest = new XMLHttpRequest();
+
+        xhttp.open("GET", "/getMessageNum?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
+        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
+            self.messageNum = +xhttp.responseText;
+            callback();
+        }
+        xhttp.send();
+    }
     private storeMessage(posX: string, posY: string) {
         let message = {
             clientID: CLIENT_ID,
             x: posX,
             y: posY,
-            messageRef: this.messageRef,
-            message: this.desiredMessage.value
+            num: this.messageNum,
+            message: this.desiredMessage.value,
+            link: this.desiredLink.value
         }
 
         let xhttp: XMLHttpRequest = new XMLHttpRequest();
         xhttp.open("POST", "/storeMessage", true);
         xhttp.setRequestHeader("Content-Type", "application/json")
         xhttp.send(JSON.stringify(message));
-    }
-
-    private storeLink(posX: string, posY: string) {
-        let link = {
-            clientID: CLIENT_ID,
-            x: posX,
-            y: posY,
-            linkRef: this.linkRef,
-            link: this.desiredLink.value
-        }
-
-        let xhttp: XMLHttpRequest = new XMLHttpRequest();
-        xhttp.open("POST", "/storeLink", true);
-        xhttp.setRequestHeader("Content-Type", "application/json")
-        xhttp.send(JSON.stringify(link));
-    }
-
-    private getNewMessageRef(x: string, y: string, callback: () => void) {
-        let self = this;
-        let xhttp: XMLHttpRequest = new XMLHttpRequest();
-
-        xhttp.open("GET", "/getMessageRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
-        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
-            self.messageRef = +xhttp.responseText;
-            callback();
-        }
-        xhttp.send();
-    }
-
-    private getNewLinkRef(x: string, y: string, callback: () => void) {
-        let self = this;
-        let xhttp: XMLHttpRequest = new XMLHttpRequest();
-
-        xhttp.open("GET", "/getLinkRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
-        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8")
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200) return;
-            self.linkRef = +xhttp.responseText;
-            callback();
-        }
-        xhttp.send();
     }
 
     dialogDiv: HTMLDivElement;
@@ -210,8 +174,7 @@ class EditDialog {
     private linkError: HTMLParagraphElement;
     private desiredMessage: HTMLInputElement;
 
-    private linkRef: number;
-    private messageRef: number;
+    private messageNum: number;
 }
 
 

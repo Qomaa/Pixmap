@@ -11,11 +11,13 @@
   },
   "main": "app.js",
   "dependencies": {
+    "@types/mongodb": "^3.0.5",
     "azure-storage": "^2.6.0",
     "body-parser": "^1.18.2",
     "debug": "^2.2.0",
     "express": "^4.14.0",
     "iota.lib.js": "^0.4.3",
+    "mongodb": "^3.0.2",
     "pug": "^2.0.0-rc.4"
   },
   "devDependencies": {

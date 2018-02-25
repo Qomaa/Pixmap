@@ -29,9 +29,7 @@ var EditDialog = /** @class */ (function () {
         //Current values
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
         this.value.textContent = mapField.value.toString() + "i";
-        this.currentContent.style.display = "none";
-        mapField.loadMessage(self.displayMessage);
-        mapField.loadLink(self.displayLink);
+        this.displayMessage(mapField.message, mapField.link);
         //User desired values
         this.colorButton = document.getElementById("dialogColor");
         this.colorButton.jscolor.onFineChange = function () {
@@ -41,32 +39,18 @@ var EditDialog = /** @class */ (function () {
         this.colorButton.jscolor.fromString(mapField.color);
         this.colorHex = this.colorButton.jscolor.toHEXString();
         this.linkError.style.display = "none";
-        this.desiredLink.onblur = function (e) {
+        this.desiredLink.onblur = function updateLink(e) {
             var link = self.desiredLink.value;
             if (link == "")
                 return;
             if (!urlRegEx.test(link))
                 self.linkError.style.display = "block";
-            if (self.linkRef == undefined) {
-                self.getNewLinkRef(mapField.x, mapField.y, function () {
-                    self.storeLink(mapField.x, mapField.y);
-                    self.updateTag(mapField);
-                });
-                return;
-            }
-            self.storeLink(mapField.x, mapField.y);
+            self.updateMessage(self, mapField);
         };
-        this.desiredMessage.onblur = function (e) {
+        this.desiredMessage.onblur = function updateMessage(e) {
             if (self.desiredMessage.value == "")
                 return;
-            if (self.messageRef == undefined) {
-                self.getNewMessageRef(mapField.x, mapField.y, function () {
-                    self.storeMessage(mapField.x, mapField.y);
-                    self.updateTag(mapField);
-                });
-                return;
-            }
-            self.storeMessage(mapField.x, mapField.y);
+            self.updateMessage(self, mapField);
         };
         //Transfer/Description
         this.transferIota.value = (mapField.value + 1).toString() + "i";
@@ -79,8 +63,7 @@ var EditDialog = /** @class */ (function () {
     };
     EditDialog.prototype.hide = function () {
         //Reset values
-        this.messageRef = undefined;
-        this.linkRef = undefined;
+        this.messageNum = undefined;
         this.desiredLink.value = "";
         this.desiredMessage.value = "";
         this.currentMessage.value = "";
@@ -93,85 +76,67 @@ var EditDialog = /** @class */ (function () {
         var r;
         var g;
         var b;
-        var message = "99999999";
-        var link = "99999999";
+        var message = "9999999999999999";
         r = pad(numberToTrytes(parseInt(this.colorHex.substring(1, 3), 16)), 2, "9");
         g = pad(numberToTrytes(parseInt(this.colorHex.substring(3, 5), 16)), 2, "9");
         b = pad(numberToTrytes(parseInt(this.colorHex.substring(5, 7), 16)), 2, "9");
-        if (this.messageRef != undefined)
-            message = pad(numberToTrytes(this.messageRef), 8, "9");
-        if (this.linkRef != undefined)
-            link = pad(numberToTrytes(this.linkRef), 8, "9");
-        tag = pad(mapField.x, 2, "9") + pad(mapField.y, 2, "9") + r + g + b + message + link;
+        if (this.messageNum != undefined)
+            message = pad(numberToTrytes(this.messageNum), 16, "9");
+        tag = pad(mapField.x, 2, "9") + pad(mapField.y, 2, "9") + r + g + b + message;
         this.transferTag.value = tag;
     };
-    EditDialog.prototype.displayMessage = function (message) {
-        if (message == "")
-            return;
-        this.currentContent.style.display = "block";
-        this.currentMessage.value = message;
-    };
-    EditDialog.prototype.displayLink = function (link) {
-        if (link == "")
-            return;
-        this.currentContent.style.display = "block";
-        this.currentLink.href = link;
-        if (link.length > 80) {
-            link = link.substring(0, 80) + "...";
+    EditDialog.prototype.displayMessage = function (message, link) {
+        this.currentContent.style.display = "none";
+        if (message != undefined && message != "") {
+            this.currentContent.style.display = "block";
+            this.currentMessage.value = message;
         }
-        this.currentLink.textContent = link;
+        if (link != undefined && link != "") {
+            this.currentContent.style.display = "block";
+            this.currentLink.href = link;
+            if (link.length > 80) {
+                link = link.substring(0, 80) + "...";
+            }
+            this.currentLink.textContent = link;
+        }
+    };
+    EditDialog.prototype.updateMessage = function (self, mapField) {
+        if (self.messageNum == undefined) {
+            self.getNewMsgRef(mapField.x, mapField.y, function () {
+                self.storeMessage(mapField.x, mapField.y);
+                self.updateTag(mapField);
+            });
+        }
+        else {
+            self.storeMessage(mapField.x, mapField.y);
+        }
+    };
+    EditDialog.prototype.getNewMsgRef = function (x, y, callback) {
+        var self = this;
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/getMessageNum?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
+        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8");
+        xhttp.onreadystatechange = function () {
+            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)
+                return;
+            self.messageNum = +xhttp.responseText;
+            callback();
+        };
+        xhttp.send();
     };
     EditDialog.prototype.storeMessage = function (posX, posY) {
         var message = {
             clientID: CLIENT_ID,
             x: posX,
             y: posY,
-            messageRef: this.messageRef,
-            message: this.desiredMessage.value
+            num: this.messageNum,
+            message: this.desiredMessage.value,
+            link: this.desiredLink.value
         };
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", "/storeMessage", true);
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify(message));
-    };
-    EditDialog.prototype.storeLink = function (posX, posY) {
-        var link = {
-            clientID: CLIENT_ID,
-            x: posX,
-            y: posY,
-            linkRef: this.linkRef,
-            link: this.desiredLink.value
-        };
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/storeLink", true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send(JSON.stringify(link));
-    };
-    EditDialog.prototype.getNewMessageRef = function (x, y, callback) {
-        var self = this;
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/getMessageRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
-        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8");
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)
-                return;
-            self.messageRef = +xhttp.responseText;
-            callback();
-        };
-        xhttp.send();
-    };
-    EditDialog.prototype.getNewLinkRef = function (x, y, callback) {
-        var self = this;
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/getLinkRef?x=" + x + "&y=" + y + "&clientID=" + CLIENT_ID, true);
-        xhttp.setRequestHeader("Content-Type", "text/html; charset=utf-8");
-        xhttp.onreadystatechange = function () {
-            if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)
-                return;
-            self.linkRef = +xhttp.responseText;
-            callback();
-        };
-        xhttp.send();
     };
     return EditDialog;
 }());

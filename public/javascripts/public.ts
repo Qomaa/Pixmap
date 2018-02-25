@@ -1,7 +1,7 @@
 ﻿let map: Pixmap;
 let RECEIVE_ADDRESS: string;
-let editDialog: EditDialog;
 let CLIENT_ID: string;
+let editDialog: EditDialog;
 
 window.onload = function () {
     let loading = document.getElementById("loading");
@@ -9,8 +9,8 @@ window.onload = function () {
     editDialog = new EditDialog();
 
     map = new Pixmap();
-    map.loadTrytes();
-
+    map.load();
+    
     loading.style.display = "none";
 
     map.divElement.addEventListener("mousedown", function (e: MouseEvent) {
@@ -53,8 +53,8 @@ window.onclick = function (event) {
     }
 }
 
-document.onkeydown = function (event){
-    if (event.keyCode == 27){
+document.onkeydown = function (event) {
+    if (event.keyCode == 27) {
         // 27 = escape
         editDialog.hide();
     }
