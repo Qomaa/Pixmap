@@ -159,6 +159,8 @@ app.use((err: any, req, res, next) => {
     });
 });
 
+app.use(express.static('publc'));
+
 app.set('port', process.env.PORT || 80);
 
 var server = app.listen(app.get('port'), function () {
