@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var debug = require("debug");
 var express = require("express");
 var https = require("https");
 var fs = require("fs");
@@ -139,13 +140,13 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-app.use(express.static('publc'));
-// app.set('port', process.env.PORT || 80);
-// var server = app.listen(app.get('port'), function () {
-//     debug('Express server listening on port ' + server.address().port);
-// });
+app.use(express.static('public'));
+app.set('port', process.env.PORT || 80);
+var server = app.listen(app.get('port'), function () {
+    debug('Express server listening on port ' + server.address().port);
+});
 https.createServer({
     cert: fs.readFileSync('./Pixmap/sslcert/fullchain.pem'),
     key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
-}, app).listen(80);
+}, app).listen(443);
 //# sourceMappingURL=app.js.map

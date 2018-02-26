@@ -162,17 +162,17 @@ app.use((err: any, req, res, next) => {
     });
 });
 
-app.use(express.static('publc'));
+app.use(express.static('public'));
 
-// app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 80);
 
-// var server = app.listen(app.get('port'), function () {
-//     debug('Express server listening on port ' + server.address().port);
-// });
+var server = app.listen(app.get('port'), function () {
+    debug('Express server listening on port ' + server.address().port);
+});
 
 https.createServer({
     cert: fs.readFileSync('./Pixmap/sslcert/fullchain.pem'),
     key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
-}, app).listen(80);
+}, app).listen(443);
 
 
