@@ -1,5 +1,7 @@
 ﻿import debug = require('debug');
 import express = require('express');
+import https = require('https');
+import fs = require('fs');
 import path = require('path');
 import bodyParser = require('body-parser');
 import mongo = require('mongodb');
@@ -9,6 +11,7 @@ import { Message } from "./db";
 import { log, logError, newGuid, isGuid } from "./util";
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -166,4 +169,10 @@ app.set('port', process.env.PORT || 80);
 var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
+
+https.createServer({
+    cert: fs.readFileSync('./sslcert/fullchain.pem'),
+    key: fs.readFileSync('./sslcert/privkey.pem')
+}, app).listen(8443);
+
 

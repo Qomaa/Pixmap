@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var debug = require("debug");
 var express = require("express");
+var https = require("https");
+var fs = require("fs");
 var path = require("path");
 var bodyParser = require("body-parser");
 var index_1 = require("./routes/index");
@@ -143,4 +145,8 @@ app.set('port', process.env.PORT || 80);
 var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
+https.createServer({
+    cert: fs.readFileSync('./sslcert/fullchain.pem'),
+    key: fs.readFileSync('./sslcert/privkey.pem')
+}, app).listen(8443);
 //# sourceMappingURL=app.js.map
