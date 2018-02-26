@@ -175,4 +175,6 @@ https.createServer({
     key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
 }, app).listen(443);
 
-
+app.get('*', function(req, res) {  
+    res.redirect('https://' + req.headers.host + req.url);
+});
