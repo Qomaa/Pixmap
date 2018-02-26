@@ -146,7 +146,7 @@ var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
 https.createServer({
-    cert: fs.readFileSync('./sslcert/fullchain.pem'),
-    key: fs.readFileSync('./sslcert/privkey.pem')
+    cert: fs.readFileSync('./Pixmap/sslcert/fullchain.pem'),
+    key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
 }, app).listen(8443);
 //# sourceMappingURL=app.js.map

@@ -171,8 +171,8 @@ var server = app.listen(app.get('port'), function () {
 });
 
 https.createServer({
-    cert: fs.readFileSync('./sslcert/fullchain.pem'),
-    key: fs.readFileSync('./sslcert/privkey.pem')
+    cert: fs.readFileSync('./Pixmap/sslcert/fullchain.pem'),
+    key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
 }, app).listen(8443);
 
 
