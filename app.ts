@@ -1,7 +1,6 @@
 ﻿import debug = require('debug');
 import express = require('express');
 import https = require('https');
-import http = require('http');
 import fs = require('fs');
 import path = require('path');
 import bodyParser = require('body-parser');
@@ -175,8 +174,3 @@ https.createServer({
     cert: fs.readFileSync('./Pixmap/sslcert/fullchain.pem'),
     key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
 }, app).listen(443);
-
-http.createServer(function (req, res) {
-    res.writeHead(307, { "Location": "https://" + req.headers['host'] + req.url });
-    res.end();
-}).listen(80);
