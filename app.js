@@ -11,6 +11,13 @@ var db_1 = require("./db");
 var db_2 = require("./db");
 var util_1 = require("./util");
 var app = express();
+app.all('*', function (req, res, next) {
+    // console.log('req start: ',req.secure, req.hostname, req.url, app.get('port'));
+    if (req.secure) {
+        return next();
+    }
+    res.redirect('https://' + req.hostname + ':' + app.get('secPort') + req.url);
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -140,13 +147,13 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-app.use(express.static('public'));
 app.set('port', process.env.PORT || 80);
+app.set('secPort', process.env.PORT || 443);
 var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
 https.createServer({
-    cert: fs.readFileSync('./Pixmap/sslcert/fullchain.pem'),
-    key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
-}, app).listen(443);
+    cert: fs.readFileSync(process.env.SSLCHAIN),
+    key: fs.readFileSync(process.env.SSLKEY)
+}, app).listen(app.get('secPort'));
 //# sourceMappingURL=app.js.map

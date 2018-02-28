@@ -1,6 +1,7 @@
 ﻿import debug = require('debug');
 import express = require('express');
 import https = require('https');
+import http = require('http');
 import fs = require('fs');
 import path = require('path');
 import bodyParser = require('body-parser');
@@ -12,6 +13,14 @@ import { log, logError, newGuid, isGuid } from "./util";
 
 var app = express();
 
+app.all('*', function (req, res, next) {
+    // console.log('req start: ',req.secure, req.hostname, req.url, app.get('port'));
+    if (req.secure) {
+        return next();
+    }
+
+    res.redirect('https://' + req.hostname + ':' + app.get('secPort') + req.url);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -162,15 +171,14 @@ app.use((err: any, req, res, next) => {
     });
 });
 
-app.use(express.static('public'));
-
 app.set('port', process.env.PORT || 80);
+app.set('secPort', process.env.PORT || 443);
 
 var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
 
 https.createServer({
-    cert: fs.readFileSync('./Pixmap/sslcert/fullchain.pem'),
-    key: fs.readFileSync('./Pixmap/sslcert/privkey.pem')
-}, app).listen(443);
+    cert: fs.readFileSync(process.env.SSLCHAIN),
+    key: fs.readFileSync(process.env.SSLKEY)
+}, app).listen(app.get('secPort'));

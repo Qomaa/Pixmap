@@ -11,7 +11,15 @@
             "program": "${workspaceFolder}\\app.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]
+            ],
+            "env": {
+                "NODE_ENV": "development",
+                "DB_CONNECTION_STRING": "mongodb://127.0.0.1:27017",
+                "DB_NAME": "pixdb",
+                "IOTA_ADDRESS": "9FZEODJXTEANNYJBRCPZA9FJNTHNYYYWSFZCEKCGBO9EEQITJTIKLKWOSYQTZNKMNEXMBOMHIBZWYOFQBW9DBMZFM9",
+                "SSLCHAIN": "./sslcert/fullchain.pem",
+                "SSLKEY": "./sslcert/privkey.pem"
+            }
         },
         {
             "type": "node",
@@ -20,7 +28,15 @@
             "program": "${workspaceFolder}\\db.js",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
-            ]
+            ],
+            "env": {
+                "NODE_ENV": "development",
+                "DB_CONNECTION_STRING": "mongodb://127.0.0.1:27017",
+                "DB_NAME": "pixdb",
+                "IOTA_ADDRESS": "9FZEODJXTEANNYJBRCPZA9FJNTHNYYYWSFZCEKCGBO9EEQITJTIKLKWOSYQTZNKMNEXMBOMHIBZWYOFQBW9DBMZFM9",
+                "SSLCHAIN": "./sslcert/fullchain.pem",
+                "SSLKEY": "/sslcert/privkey.pem"
+            }
         }
     ]
 }

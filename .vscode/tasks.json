@@ -10,13 +10,10 @@
         },
         {
             "type": "typescript",
-            "tsconfig": "Web.Pixmap\\tsconfig.json",
+            "tsconfig": "Pixmap\\tsconfig.json",
             "problemMatcher": [
                 "$tsc"
             ]
-        },
-        {
-            
         }
     ]
 }
