@@ -10,15 +10,16 @@
 }
 
 #title {
-    color: #0600ff;
     font-size: x-large;
     text-align: center;
     padding-bottom: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* text-shadow: 0px 0px 20px #00ffff; */
-    /* display:none; */
+}
+#titleCaption, #titleCaption:visited, #titleCaption:link, #titleCaption:active {
+    color: #0600ff;
+    text-decoration: none;
 }
 
 #loading{

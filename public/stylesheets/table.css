@@ -1,0 +1,24 @@
+#titleTable {
+    font-size: x-large;
+    padding-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    font-weight: bold;
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}

@@ -3,11 +3,17 @@ var RECEIVE_ADDRESS;
 var CLIENT_ID;
 var editDialog;
 window.onload = function () {
+    loadPixmap();
+};
+function loadPixmap() {
     var loading = document.getElementById("loading");
+    loading.style.display = "block";
     editDialog = new EditDialog();
     map = new Pixmap();
-    map.load();
-    loading.style.display = "none";
+    map.load(function () {
+        map.generateMap();
+        loading.style.display = "none";
+    });
     map.divElement.addEventListener("mousedown", function (e) {
         //console.log(e);
         var id = e.target.id;
@@ -38,7 +44,7 @@ window.onload = function () {
     // saveButton.addEventListener("click", function(e){
     //     map.save();
     // });
-};
+}
 window.onclick = function (event) {
     if (event.target == editDialog.dialogDiv) {
         editDialog.hide();
@@ -50,4 +56,4 @@ document.onkeydown = function (event) {
         editDialog.hide();
     }
 };
-//# sourceMappingURL=public.js.map
+//# sourceMappingURL=index.js.map

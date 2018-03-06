@@ -1,15 +1,30 @@
 ﻿//- https://naltatis.github.io/jade-syntax-docs/
 extends layout
 
+block css
+        link(rel='stylesheet', href='/stylesheets/main.css')
+        link(rel='stylesheet', href='/stylesheets/editDialog.css')
+        link(rel='stylesheet', href='/stylesheets/tooltip.css')
+
+block scripts
+        script(src="/javascripts/jscolor/jscolor.min.js")
+        script(src='/javascripts/index.js')
+        script(src='/javascripts/MapField.js')
+        script(src='/javascripts/Message.js')
+        script(src='/javascripts/Pixmap.js')
+        script(src='/javascripts/utils.js')
+        script(src='/javascripts/EditDialog.js')
+      
 block content
     #title
-        img(src="/images/favicon.png", alt="iota.show logo", style="margin:5px;")
-        span= title
+        img(src="/images/favicon.png", alt="iota.show logo", style="margin:0px 10px 0px 0px;")
+        a#titleCaption(href="https://iota.show", title) iota.show
+
     p(style="font-size:small;text-align:center;color:#0600ff;padding-bottom:20px;margin-top:0px;") Click on a dot to change its color. You can also write a message and post a link.
-    #loading
+    p(style="text-align:center;")
+        a(href="/table") View top valued dots in a table
     #pixmap
         p#loading loading ...
-    #pixmap2
     p#footer
         a.footerlink(href="https://www.youtube.com/watch?v=ivWqqfzunhI") What is IOTA (video)?
         a.footerlink(href="https://iotasupport.com/gui-sendingandreceiving.shtml") How to transfer IOTA?

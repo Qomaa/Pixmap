@@ -14,7 +14,7 @@ var Pixmap = /** @class */ (function () {
     //     xhttp.setRequestHeader("Content-Type", "application/json")
     //     xhttp.send(mapString);
     // }
-    Pixmap.prototype.load = function () {
+    Pixmap.prototype.load = function (callback) {
         var m;
         var self = this;
         var body = document.querySelector("body");
@@ -33,7 +33,8 @@ var Pixmap = /** @class */ (function () {
             self.rowCount = m.rowCount;
             self.columnCount = m.columnCount;
             self.mapFields = m.mapFields;
-            self.generateMap();
+            callback();
+            // self.generateMap();
             // self.convertToMongo();
         };
         xhttp.send();

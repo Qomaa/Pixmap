@@ -15,7 +15,7 @@
     //     xhttp.send(mapString);
     // }
 
-    load() {
+    load(callback: () => void) {
         let m: Pixmap;
         let self = this;
         let body = document.querySelector("body");
@@ -35,7 +35,8 @@
             self.rowCount = m.rowCount;
             self.columnCount = m.columnCount;
             self.mapFields = m.mapFields;
-            self.generateMap();
+            callback();
+            // self.generateMap();
             // self.convertToMongo();
         }
         xhttp.send();

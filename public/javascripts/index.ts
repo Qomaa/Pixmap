@@ -4,14 +4,20 @@ let CLIENT_ID: string;
 let editDialog: EditDialog;
 
 window.onload = function () {
-    let loading = document.getElementById("loading");
+    loadPixmap();
+}
 
+function loadPixmap() {
+    let loading = document.getElementById("loading");
+    loading.style.display = "block";
+    
     editDialog = new EditDialog();
 
     map = new Pixmap();
-    map.load();
-    
-    loading.style.display = "none";
+    map.load(() => {
+        map.generateMap();
+        loading.style.display = "none";
+    });
 
     map.divElement.addEventListener("mousedown", function (e: MouseEvent) {
         //console.log(e);

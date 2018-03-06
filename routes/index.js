@@ -10,5 +10,10 @@ router.get('/', function (req, res) {
         title: 'iota.show',
     });
 });
+router.get('/table', function (req, res) {
+    res.render('table', {
+        title: 'iota.show',
+    });
+});
 exports.default = router;
 //# sourceMappingURL=index.js.map
