@@ -20,7 +20,7 @@ window.onload = function () {
         });
         //header
         var row = document.createElement("tr");
-        row.insertCell(0).outerHTML = "<th>#</th>";
+        row.insertCell(0).outerHTML = "<th></th>";
         row.insertCell(1).outerHTML = "<th>Value</th>";
         row.insertCell(2).outerHTML = "<th>Link</th>";
         row.insertCell(3).outerHTML = "<th>Message</th>";
@@ -31,17 +31,18 @@ window.onload = function () {
                 return;
             row = document.createElement("tr");
             i++;
-            createCell(row, 0, i, false);
-            createCell(row, 1, mapField.value, false);
-            createCell(row, 2, mapField.link, true);
-            createCell(row, 3, mapField.message, false);
+            createCell(row, 0, i, "number", false);
+            createCell(row, 1, mapField.value + "i", null, false);
+            createCell(row, 2, mapField.link, null, true);
+            createCell(row, 3, mapField.message, null, false);
             table.appendChild(row);
         });
         loading.style.display = "none";
     });
 };
-function createCell(row, index, cellContent, isLink) {
+function createCell(row, index, cellContent, className, isLink) {
     var cell = row.insertCell(index);
+    cell.className = className;
     if (cellContent == undefined) {
         cellContent = "";
     }

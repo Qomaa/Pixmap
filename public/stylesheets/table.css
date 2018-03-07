@@ -14,11 +14,15 @@ th {
     font-weight: bold;
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid lightgrey;
 }
 
 td {
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid lightgrey;
+}
+
+.number {
+    color: lightgrey;
 }
