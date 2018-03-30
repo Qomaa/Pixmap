@@ -1,11 +1,14 @@
 var EditDialog = /** @class */ (function () {
     function EditDialog() {
         var _this = this;
+        this.urlRegEx = new RegExp(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i);
         this.dialogDiv = document.querySelector("#editDialog");
         this.position = document.querySelector("#dialogXY");
         this.xy = document.querySelector("#XY");
         this.iotas = document.querySelector("#iotas");
         this.value = document.querySelector("#dialogValue");
+        this.timestamp = document.querySelector("#timestamp");
+        this.transactionHash = document.querySelector("#transactionHash");
         this.transferIota = document.querySelector("#transferIota");
         this.transferAddress = document.querySelector("#transferAddress");
         this.transferTag = document.querySelector("#transferTag");
@@ -25,9 +28,14 @@ var EditDialog = /** @class */ (function () {
     EditDialog.prototype.show = function (mapField) {
         var _this = this;
         var self = this;
-        var urlRegEx = new RegExp(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i);
         //Current values
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
+        if (mapField.timestamp != undefined)
+            this.timestamp.textContent = new Date(+mapField.timestamp).toLocaleString();
+        if (mapField.transaction != undefined) {
+            this.transactionHash.textContent = "tx on thetangle.org";
+            this.transactionHash.href = "https://thetangle.org/transaction/" + mapField.transaction;
+        }
         this.value.textContent = mapField.value.toString() + "i";
         this.displayMessage(mapField.message, mapField.link);
         //User desired values
@@ -43,7 +51,7 @@ var EditDialog = /** @class */ (function () {
             var link = self.desiredLink.value;
             if (link == "")
                 return;
-            if (!urlRegEx.test(link))
+            if (!self.urlRegEx.test(link))
                 self.linkError.style.display = "block";
             self.updateMessage(self, mapField);
         };
@@ -68,6 +76,9 @@ var EditDialog = /** @class */ (function () {
         this.desiredMessage.value = "";
         this.currentMessage.value = "";
         this.currentLink.textContent = "";
+        this.timestamp.textContent = "";
+        this.transactionHash.textContent = "";
+        this.transactionHash.href = "";
         this.linkError.style.display = "none";
         this.dialogDiv.style.display = "none";
     };
@@ -93,7 +104,10 @@ var EditDialog = /** @class */ (function () {
         }
         if (link != undefined && link != "") {
             this.currentContent.style.display = "block";
-            this.currentLink.href = link;
+            if (this.urlRegEx.test(link))
+                this.currentLink.href = link;
+            else
+                this.currentLink.href = "http://" + link;
             if (link.length > 80) {
                 link = link.substring(0, 80) + "...";
             }

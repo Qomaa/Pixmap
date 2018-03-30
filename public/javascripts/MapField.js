@@ -1,5 +1,5 @@
 var MapField = /** @class */ (function () {
-    function MapField(x, y, color, value, message, link, pixmap) {
+    function MapField(x, y, color, value, message, link, transaction, timestamp, pixmap) {
         this.x = x;
         this.y = y;
         this.pixmap = pixmap;
@@ -7,7 +7,8 @@ var MapField = /** @class */ (function () {
         this.value = value;
         this.message = message;
         this.link = link;
-        // this.linkRef = linkref;
+        this.transaction = transaction;
+        this.timestamp = timestamp;
     }
     MapField.prototype.getDivElement = function () {
         var self = this;

@@ -10,7 +10,6 @@ block scripts
         script(src="/javascripts/jscolor/jscolor.min.js")
         script(src='/javascripts/index.js')
         script(src='/javascripts/MapField.js')
-        script(src='/javascripts/Message.js')
         script(src='/javascripts/Pixmap.js')
         script(src='/javascripts/utils.js')
         script(src='/javascripts/EditDialog.js')
@@ -25,15 +24,18 @@ block content
         a(href="/table") View top valued dots in a table
     #pixmap
         p#loading loading ...
-    p#footer
+    div#footer
         a.footerlink(href="https://www.youtube.com/watch?v=ivWqqfzunhI") What is IOTA (video)?
         a.footerlink(href="https://iotasupport.com/gui-sendingandreceiving.shtml") How to transfer IOTA?
         a.footerlink(href="https://github.com/Qomaa/Pixmap") github
+        .disclaimer The website administrator reserves the right to delete entries if they are not appropriate.
     #editDialog
         #dialogContent
             p#dialogHead
                 span#dialogXY
                 span#dialogValue
+                span#timestamp
+                a#transactionHash
             #currentContent
                 p(style="margin:10px")
                     a#currentLink

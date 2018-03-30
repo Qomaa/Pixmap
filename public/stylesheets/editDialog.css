@@ -69,11 +69,19 @@
     border-color:aqua;
 }
 
-#dialogValue{
+#dialogValue {
     margin-left: 20px;
 }
 
-#desiredContent{
+#transactionHash {
+    margin-left: 20px;
+}
+
+#timestamp {
+    margin-left: 20px;
+}
+
+#desiredContent {
     margin-bottom: 50px;
 }
 

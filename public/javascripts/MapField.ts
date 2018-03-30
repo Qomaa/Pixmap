@@ -1,5 +1,5 @@
 ﻿class MapField {
-    constructor(x: string, y: string, color: string, value: number, message: string, link: string, pixmap: Pixmap) {
+    constructor(x: string, y: string, color: string, value: number, message: string, link: string, transaction: string, timestamp:string, pixmap: Pixmap) {
         this.x = x;
         this.y = y;
         this.pixmap = pixmap;
@@ -7,7 +7,8 @@
         this.value = value;
         this.message = message;
         this.link = link;
-        // this.linkRef = linkref;
+        this.transaction = transaction;
+        this.timestamp = timestamp;
     }
 
     getDivElement(): HTMLDivElement {
@@ -78,4 +79,6 @@
     value: number;
     message: string;
     link: string;
+    transaction: string;
+    timestamp: string;
 }

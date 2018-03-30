@@ -26,6 +26,7 @@ window.onload = function () {
         row.insertCell(1).outerHTML ="<th>Value</th>";
         row.insertCell(2).outerHTML ="<th>Link</th>";
         row.insertCell(3).outerHTML ="<th>Message</th>";
+        row.insertCell(4).outerHTML ="<th>TimeStamp</th>";
         let head= table.createTHead();
         head.appendChild(row);
         
@@ -35,10 +36,17 @@ window.onload = function () {
             row = document.createElement("tr");
             i++;
 
-            createCell(row, 0, i, "number", false);
-            createCell(row, 1, mapField.value + "i", null, false);
-            createCell(row, 2, mapField.link, null, true);
-            createCell(row, 3, mapField.message, null, false);
+            if (mapField.transaction != undefined)
+                createCell(row, 0, i, "number", true, "https://thetangle.org/transaction/" + mapField.transaction);
+            else
+                createCell(row, 0, i, "number", false, null);
+            createCell(row, 1, mapField.value + "i", null, false, null);
+            createCell(row, 2, mapField.link, null, true, mapField.link);
+            createCell(row, 3, mapField.message, null, false, null);
+            if (mapField.timestamp != undefined)
+                createCell(row, 4, new Date(+mapField.timestamp).toLocaleString(), null, false, null);
+            else
+                createCell(row, 4, "", null, false, null);
 
             table.appendChild(row);
         });
@@ -47,7 +55,7 @@ window.onload = function () {
     });
 }
 
-function createCell(row: HTMLTableRowElement, index: number, cellContent, className: string, isLink: boolean) {
+function createCell(row: HTMLTableRowElement, index: number, cellContent, className: string, isLink: boolean, link: string) {
     let cell = row.insertCell(index);
 
     cell.className = className;
@@ -57,10 +65,10 @@ function createCell(row: HTMLTableRowElement, index: number, cellContent, classN
     }
 
     if (isLink) {
-        let link = document.createElement("a");
-        link.href = cellContent;
-        link.textContent = cellContent;
-        cell.appendChild(link);
+        let lin = document.createElement("a");
+        lin.href = link;
+        lin.textContent = cellContent;
+        cell.appendChild(lin);
     }
     else {
         cell.innerText = cellContent;

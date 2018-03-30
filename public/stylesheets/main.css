@@ -66,3 +66,8 @@
 .footerlink:hover{
     text-shadow: 0px 0px 20px #00ffff;
 }
+
+.disclaimer {
+    margin: 10px 0px 0px 0px;
+    font-size: smaller;
+}
