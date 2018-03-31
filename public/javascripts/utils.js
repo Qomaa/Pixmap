@@ -8,6 +8,12 @@ function rgb2hex(rgb) {
 function pad(value, length, padchar) {
     return (value.toString().length < length) ? pad(padchar + value, length, padchar) : value;
 }
+function trimEnd(value, trimChar) {
+    while (value.charAt(value.length - 1) == trimChar) {
+        value = value.substr(0, value.length - 1);
+    }
+    return value;
+}
 function numberToTrytes(input) {
     var TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var trytes = "";

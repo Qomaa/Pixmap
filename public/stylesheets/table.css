@@ -26,3 +26,10 @@ td {
 .number {
     color: lightgrey;
 }
+
+a {
+    color:  #0600ff;
+}
+a:hover {
+    text-shadow: 0px 0px 20px #00ffff;
+}

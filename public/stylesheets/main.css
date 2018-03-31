@@ -61,13 +61,17 @@
 
 .footerlink{
     margin: 0px 10px 0px 10px;
+    
+}
+
+a {
     color:  #0600ff;
 }
-.footerlink:hover{
+a:hover{
     text-shadow: 0px 0px 20px #00ffff;
 }
 
-.disclaimer {
-    margin: 10px 0px 0px 0px;
+#disclaimer {
+    margin: 20px 0px 0px 0px;
     font-size: smaller;
 }

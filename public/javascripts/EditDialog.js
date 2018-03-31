@@ -94,7 +94,7 @@ var EditDialog = /** @class */ (function () {
         if (this.messageNum != undefined)
             message = pad(numberToTrytes(this.messageNum), 16, "9");
         tag = pad(mapField.x, 2, "9") + pad(mapField.y, 2, "9") + r + g + b + message;
-        this.transferTag.value = tag;
+        this.transferTag.value = trimEnd(tag, "9");
     };
     EditDialog.prototype.displayMessage = function (message, link) {
         this.currentContent.style.display = "none";

@@ -106,7 +106,7 @@ class EditDialog {
 
         tag = pad(mapField.x, 2, "9") + pad(mapField.y, 2, "9") + r + g + b + message;
 
-        this.transferTag.value = tag;
+        this.transferTag.value = trimEnd(tag, "9");
     }
 
     private displayMessage(message: string, link: string) {
