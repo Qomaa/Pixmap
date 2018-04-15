@@ -1,31 +1,31 @@
 window.onload = function () {
-    var table = document.querySelector("#table");
-    var pixmap = new Pixmap();
-    var i = 0;
-    var loading = document.getElementById("loading");
+    let table = document.querySelector("#table");
+    let pixmap = new Pixmap();
+    let i = 0;
+    let loading = document.getElementById("loading");
     loading.style.display = "block";
     while (table.firstChild) {
         table.removeChild(table.firstChild);
     }
-    pixmap.load(function () {
-        pixmap.mapFields.sort(function (item1, item2) {
+    pixmap.load(() => {
+        pixmap.mapFields.sort((item1, item2) => {
             if (item1.value < item2.value)
                 return 1;
             if (item1.value > item2.value)
                 return -1;
-            var r = Math.round(Math.random());
+            let r = Math.round(Math.random());
             if (r == 0)
                 r = -1;
             return r;
         });
         //header
-        var row = document.createElement("tr");
+        let row = document.createElement("tr");
         row.insertCell(0).outerHTML = "<th></th>";
         row.insertCell(1).outerHTML = "<th>Value</th>";
         row.insertCell(2).outerHTML = "<th>Link</th>";
         row.insertCell(3).outerHTML = "<th>Message</th>";
         row.insertCell(4).outerHTML = "<th>TimeStamp</th>";
-        var head = table.createTHead();
+        let head = table.createTHead();
         head.appendChild(row);
         pixmap.mapFields.forEach(function (mapField) {
             if (mapField.value < 2)
@@ -49,13 +49,13 @@ window.onload = function () {
     });
 };
 function createCell(row, index, cellContent, className, isLink, link) {
-    var cell = row.insertCell(index);
+    let cell = row.insertCell(index);
     cell.className = className;
     if (cellContent == undefined) {
         cellContent = "";
     }
     if (isLink) {
-        var lin = document.createElement("a");
+        let lin = document.createElement("a");
         lin.href = link;
         lin.textContent = cellContent;
         cell.appendChild(lin);

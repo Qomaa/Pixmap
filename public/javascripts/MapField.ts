@@ -13,7 +13,7 @@
 
     getDivElement(): HTMLDivElement {
         let self = this;
-        let delayedFuncton;
+        // let delayedFuncton;
 
         this.divElement = document.createElement("div");
         this.divElement.className = "mapfield";
@@ -71,7 +71,7 @@
         return this.divElement;
     }
 
-    private divElement: HTMLDivElement;
+    divElement: HTMLDivElement;
     pixmap: Pixmap;
     x: string;
     y: string;

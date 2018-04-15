@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var mongo = require('mongodb');
-var util_1 = require("./util");
-var connectionString = "mongodb://127.0.0.1:27017"; //process.env.DB_CONNECTION_STRING;
-var dbName = "pixdb"; //process.env.DB_NAME;
-var mongoClient = mongo.MongoClient;
+let mongo = require('mongodb');
+const util_1 = require("./util");
+let connectionString = process.env.DB_CONNECTION_STRING;
+let dbName = process.env.DB_NAME;
+let mongoClient = mongo.MongoClient;
 // let r = readMessageRef("1", "1", function (err, res) {
 //     console.log("result: " + res);
 // });
@@ -21,8 +21,8 @@ function delet() {
         if (err) {
             return;
         }
-        var dbo = db.db(dbName);
-        for (var i = 0; i < 20; i++) {
+        let dbo = db.db(dbName);
+        for (let i = 0; i < 20; i++) {
             dbo.collection("map")
                 .remove({}, { justOne: true }, function (err, res) {
                 db.close();
@@ -36,7 +36,7 @@ function printDB() {
         if (err) {
             return;
         }
-        var dbo = db.db(dbName);
+        let dbo = db.db(dbName);
         dbo.collection("map")
             .find({})
             .toArray(function (err, res) {
@@ -52,7 +52,7 @@ function query(collection, query, projection, sort, limit, callback) {
             callback(err, undefined);
             return;
         }
-        var dbo = db.db(dbName);
+        let dbo = db.db(dbName);
         dbo.collection(collection)
             .find(query)
             .project(projection)
@@ -64,15 +64,15 @@ function query(collection, query, projection, sort, limit, callback) {
         });
     });
 }
-function insert(collection, message, callback) {
+function insert(collection, toInsert, callback) {
     mongoClient.connect(connectionString, function (err, db) {
         if (err) {
             callback(err, undefined);
             return;
         }
-        var dbo = db.db(dbName);
+        let dbo = db.db(dbName);
         dbo.collection(collection)
-            .insert(message, function (err, res) {
+            .insert(toInsert, function (err, res) {
             db.close();
             callback(err, res);
         });
@@ -84,7 +84,7 @@ function update(collection, query, update, callback) {
             callback(err, undefined);
             return;
         }
-        var dbo = db.db(dbName);
+        let dbo = db.db(dbName);
         dbo.collection(collection)
             .updateOne(query, update, function (err, res) {
             db.close();
@@ -93,14 +93,14 @@ function update(collection, query, update, callback) {
     });
 }
 function getNextMessageNum(messageReq, callback) {
-    var q = {
+    let q = {
         x: messageReq.x,
         y: messageReq.y,
     };
-    var projection = { _id: 0 };
-    var message = new Message(messageReq.x, messageReq.y, 1, messageReq.clientID, messageReq.text, messageReq.link);
-    var sort = [["num", "desc"]];
-    var limit = 1;
+    let projection = { _id: 0 };
+    let message = new Message(messageReq.x, messageReq.y, 1, messageReq.clientID, messageReq.text, messageReq.link);
+    let sort = [["num", "desc"]];
+    let limit = 1;
     query("message", q, projection, sort, limit, function (error, result) {
         if (result != null) {
             //gefunden? ==> num erhöhen
@@ -123,20 +123,82 @@ function readMap(callback) {
 }
 exports.readMap = readMap;
 function writeMessage(message, callback) {
-    var q = {
+    let q = {
         x: message.x,
         y: message.y,
         num: message.num,
         clientID: message.clientID
     };
-    var fields = { text: 1 };
-    var sort;
+    let fields = { text: 1 };
+    let sort;
     update("message", q, { $set: { text: message.text, link: message.link } }, callback);
     util_1.log("update attempt: x:" + message.x + " y:" + message.y + " text:" + message.text + " link:" + message.link);
 }
 exports.writeMessage = writeMessage;
-var Message = /** @class */ (function () {
-    function Message(x, y, num, clientID, text, link) {
+function getNextBatchTag(clientID, callback) {
+    let projection = { _id: 0 };
+    let batchNum = { num: 0 };
+    let sort = ["tag", "desc"];
+    let limit = 1;
+    let batch;
+    query("batch", {}, projection, sort, limit, (err, res) => {
+        let tag;
+        let num;
+        if (res == undefined)
+            num = 1;
+        else
+            num = util_1.trytesToNumber(res.tag.substring(2)) + 1;
+        tag = "ZZ" + util_1.pad(util_1.numberToTrytes(num), 25, "9");
+        batch = new Batch(clientID, tag, []);
+        insert("batch", batch, function (error, result) {
+            callback(err, tag);
+        });
+    });
+}
+exports.getNextBatchTag = getNextBatchTag;
+function writeBatch(batch, callback) {
+    let fieldToStore = batch.changedFields;
+    let q = {
+        tag: batch.tag
+    };
+    let projection = { _id: 0 };
+    let sort;
+    let limit = 1;
+    //Suche Batch mit übergebenen Tag
+    query("batch", q, projection, sort, limit, (err, res) => {
+        if (err) {
+            callback(err);
+            return;
+        }
+        if (res == undefined) {
+            err = new Error("Didn't find Batch under Tag " + batch.tag + ".");
+            return;
+        }
+        //Prüfe ClientID 
+        if (res.clientID != batch.clientID) {
+            callback(new Error("ClientID doesn't match."));
+            return;
+        }
+        update("batch", q, { $set: { changedFields: batch.changedFields } }, callback);
+    });
+}
+exports.writeBatch = writeBatch;
+function replace(collection, query, update, callback) {
+    mongoClient.connect(connectionString, function (err, db) {
+        if (err) {
+            callback(err, undefined);
+            return;
+        }
+        let dbo = db.db(dbName);
+        dbo.collection(collection)
+            .replaceOne(query, update, function (err, res) {
+            db.close();
+            callback(err, res);
+        });
+    });
+}
+class Message {
+    constructor(x, y, num, clientID, text, link) {
         this.x = x;
         this.y = y;
         this.num = num;
@@ -144,7 +206,14 @@ var Message = /** @class */ (function () {
         this.text = text;
         this.link = link;
     }
-    return Message;
-}());
+}
 exports.Message = Message;
+class Batch {
+    constructor(clientID, tag, changedFields) {
+        this.clientID = clientID;
+        this.tag = tag;
+        this.changedFields = changedFields;
+    }
+}
+exports.Batch = Batch;
 //# sourceMappingURL=db.js.map

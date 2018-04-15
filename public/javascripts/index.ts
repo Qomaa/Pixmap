@@ -2,6 +2,7 @@
 let RECEIVE_ADDRESS: string;
 let CLIENT_ID: string;
 let editDialog: EditDialog;
+let batchMode: BatchMode;
 
 window.onload = function () {
     loadPixmap();
@@ -10,22 +11,52 @@ window.onload = function () {
 function loadPixmap() {
     let loading = document.getElementById("loading");
     loading.style.display = "block";
-    
-    editDialog = new EditDialog();
 
+    editDialog = new EditDialog();
     map = new Pixmap();
+    batchMode = new BatchMode(map);
+
     map.load(() => {
         map.generateMap();
         loading.style.display = "none";
     });
+    
+    // map.divElement.addEventListener("mouseenter", function (e) {
+    //     if (e.button === 1 && batchMode.isEnabled) // linke Taste
+    //     {
+    //         if (!batchMode.isEnabled) return;
+
+    //         let id = (e.target as HTMLDivElement).id;
+    //         let x: string = id.substring(1, id.indexOf("y"));
+    //         let y: string = id.substring(id.indexOf("y") + 1);
+    //         let mapField = map.mapFields.filter(item => item.x == x && item.y == y)[0]
+
+    //         batchMode.setField(mapField);
+    //     }
+    // });
 
     map.divElement.addEventListener("mousedown", function (e: MouseEvent) {
+        //if (batchMode.isEnabled) return;
+
         //console.log(e);
         let id = (e.target as HTMLDivElement).id;
         let x: string = id.substring(1, id.indexOf("y"));
         let y: string = id.substring(id.indexOf("y") + 1);
+        let mapField = map.mapFields.filter(item => item.x == x && item.y == y)[0]
+        
+        if(mapField === undefined) return;
 
-        editDialog.show(map.mapFields.filter(item => item.x == x && item.y == y)[0]);
+        if (batchMode.isEnabled)
+            batchMode.setField(mapField);
+        else
+            editDialog.show(mapField);
+    });
+
+    batchMode.divElement.addEventListener("click", function (e: MouseEvent) {
+        if (!batchMode.isEnabled)
+            batchMode.enable();
+        else
+            batchMode.disable();
     });
 
     let xhttp: XMLHttpRequest = new XMLHttpRequest();

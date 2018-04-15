@@ -7,8 +7,8 @@ import path = require('path');
 import bodyParser = require('body-parser');
 import mongo = require('mongodb');
 import routes from './routes/index';
-import { writeMessage, printDB, readMap, writeMap, getNextMessageNum } from "./db";
-import { Message } from "./db";
+import { writeMessage, printDB, readMap, writeMap, getNextMessageNum, writeBatch, getNextBatchTag } from "./db";
+import { Message, Batch } from "./db";
 import { log, logError, newGuid, isGuid } from "./util";
 
 var app = express();
@@ -70,6 +70,52 @@ app.get("/getMessageNum", function (request, response) {
             response.sendStatus(400);
         } else {
             response.send(String(result));
+        }
+    });
+});
+
+app.get("/getNextBatchTag", async function (request, response) {
+    let clientID = request.query.clientID;
+    let tag: string;
+
+    if (!isGuid(clientID)) {
+        response.sendStatus(400);
+        return;
+    }
+
+    getNextBatchTag(clientID, function (err, result) {
+        if (err) {
+            logError(err);
+            response.sendStatus(400);
+            return;
+        }
+
+        response.send(result);
+    });
+});
+
+app.post("/storeBatch", function (request, response) {
+    let clientID = request.body.clientID;
+    let tag: string = request.body.tag;
+    let changeFields: MapField[] = request.body.changedFields;
+
+    let invalidAddValue = changeFields.find((changedField, index) => {
+        let fieldValue = Number(changedField.value);
+        return fieldValue === undefined || fieldValue === NaN || fieldValue < 1;
+    });
+
+    if (!isGuid(clientID) || invalidAddValue) {
+        response.sendStatus(400);
+        return;
+    }
+
+    let batch = new Batch(clientID, tag, changeFields);
+    writeBatch(batch, err => {
+        if (err) {
+            logError(err);
+            response.sendStatus(400);
+        } else {
+            response.sendStatus(200);
         }
     });
 });

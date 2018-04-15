@@ -20,3 +20,39 @@ export function isGuid(guid: string): boolean {
     let reg = new RegExp("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
     return reg.test(guid);
 }
+
+export function pad(value: string, length: number, padchar: string) {
+    return (value.toString().length < length) ? pad(padchar + value, length, padchar) : value;
+}
+
+export function numberToTrytes(input: number): string {
+    const TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let trytes: string = "";
+    let remainder: number;
+    let quotient = input;
+
+    let digit: string = "";
+
+    while (quotient != 0) {
+
+        remainder = quotient % 27;
+        digit = TRYTE_VALUES.charAt(remainder);
+        trytes = digit + trytes;
+        quotient = Math.floor(quotient / 27);
+    }
+
+    return trytes;
+}
+
+export function trytesToNumber(input: string): number {
+    const TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let result: number = 0;
+    let position: number = 0;
+
+    for (let i = input.length - 1; i >= 0; i--) {
+        result += TRYTE_VALUES.indexOf(input[i]) * Math.pow(27, position);
+        position++;
+    }
+
+    return result;
+}

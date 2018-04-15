@@ -1,18 +1,23 @@
 class EditDialog {
-    private urlRegEx = new RegExp(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i);
-
     constructor() {
         this.dialogDiv = document.querySelector("#editDialog");
+        this.dialogHead = document.querySelector("#dialogHead");
         this.position = document.querySelector("#dialogXY");
         this.xy = document.querySelector("#XY");
         this.iotas = document.querySelector("#iotas");
         this.value = document.querySelector("#dialogValue");
         this.timestamp = document.querySelector("#timestamp");
         this.transactionHash = document.querySelector("#transactionHash");
+        this.colorButton = document.querySelector("#dialogColor");
+        this.instructionsSingle = document.querySelector("#instructionsSingle");
+        this.instructionsBatch = document.querySelector("#instructionsBatch");
+        this.amountSingle = document.querySelector("#amountSingle");
+        this.amountBatch = document.querySelector("#amountBatch");
         this.transferIota = document.querySelector("#transferIota");
         this.transferAddress = document.querySelector("#transferAddress");
         this.transferTag = document.querySelector("#transferTag");
         this.linkError = document.querySelector("#linkError");
+        this.desiredContent = document.querySelector("#desiredContent");
         this.desiredLink = document.querySelector("#desiredLink");
         this.desiredMessage = document.querySelector("#desiredMessage");
         this.currentContent = document.querySelector("#currentContent");
@@ -27,36 +32,60 @@ class EditDialog {
         });
     }
 
+    showBatch(iotaToSend: string, tag: string) {
+        hideElement(this.desiredContent);
+        hideElement(this.dialogHead);
+        hideElement(this.instructionsSingle);
+        hideElement(this.currentContent);
+        hideElement(this.amountSingle);
+        showElement(this.instructionsBatch);
+        showElement(this.amountBatch);
+
+        this.transferIota.value = iotaToSend;
+        this.transferTag.value = tag;
+        this.transferAddress.value = RECEIVE_ADDRESS;
+        
+        showElement(this.dialogDiv);
+    }
+
     show(mapField: MapField) {
         let self = this;
-        
+
+        hideElement(this.instructionsBatch);
+        hideElement(this.amountBatch);
+        showElement(this.desiredContent);
+        showElement(this.dialogHead);
+        showElement(this.instructionsSingle);
+        showElement(this.amountSingle);
+
         //Current values
         this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
         if (mapField.timestamp != undefined)
             this.timestamp.textContent = new Date(+mapField.timestamp).toLocaleString();
 
-        if (mapField.transaction != undefined){
+        if (mapField.transaction != undefined) {
             this.transactionHash.textContent = "tx on thetangle.org";
-            this.transactionHash.href ="https://thetangle.org/transaction/" + mapField.transaction;
+            this.transactionHash.href = "https://thetangle.org/transaction/" + mapField.transaction;
         }
         this.value.textContent = mapField.value.toString() + "i";
         this.displayMessage(mapField.message, mapField.link);
 
         //User desired values
-        this.colorButton = document.getElementById("dialogColor");
         this.colorButton.jscolor.onFineChange = () => {
             this.colorHex = this.colorButton.jscolor.toHEXString();
             this.updateTag(mapField);
         };
         this.colorButton.jscolor.fromString(mapField.color);
         this.colorHex = this.colorButton.jscolor.toHEXString();
-        this.linkError.style.display = "none";
+        hideElement(this.linkError);
         this.desiredLink.onblur = function updateLink(e) {
             let link = self.desiredLink.value;
             if (link == "") return;
 
-            if (!self.urlRegEx.test(link))
-                self.linkError.style.display = "block";
+            if (!getUrlRegEx().test(link))
+                showElement(self.linkError);
+            else
+                hideElement(self.linkError);
 
             self.updateMessage(self, mapField);
         }
@@ -73,7 +102,7 @@ class EditDialog {
 
         //Update Tag
         this.updateTag(mapField);
-        this.dialogDiv.style.display = "block";
+        showElement(this.dialogDiv);
     }
 
     hide() {
@@ -86,7 +115,7 @@ class EditDialog {
         this.timestamp.textContent = "";
         this.transactionHash.textContent = "";
         this.transactionHash.href = "";
-        this.linkError.style.display = "none";
+        hideElement(this.linkError);
 
         this.dialogDiv.style.display = "none";
     }
@@ -110,17 +139,17 @@ class EditDialog {
     }
 
     private displayMessage(message: string, link: string) {
-        this.currentContent.style.display = "none";
-        
+        hideElement(this.currentContent);
+
         if (message != undefined && message != "") {
-            this.currentContent.style.display = "block";
+            showElement(this.currentContent);
             this.currentMessage.value = message;
         }
 
         if (link != undefined && link != "") {
-            this.currentContent.style.display = "block";
+            showElement(this.currentContent);
 
-            if (this.urlRegEx.test(link))
+            if (getUrlRegEx().test(link))
                 this.currentLink.href = link;
             else
                 this.currentLink.href = "http://" + link;
@@ -156,6 +185,7 @@ class EditDialog {
         }
         xhttp.send();
     }
+
     private storeMessage(posX: string, posY: string) {
         let message = {
             clientID: CLIENT_ID,
@@ -173,12 +203,19 @@ class EditDialog {
     }
 
     dialogDiv: HTMLDivElement;
+    private dialogHead: HTMLParagraphElement;
     private colorHex: string;
     private colorButton: any;
     private position: HTMLSpanElement;
     private xy: HTMLSpanElement;
     private timestamp: HTMLSpanElement;
     private transactionHash: HTMLLinkElement;
+
+    private instructionsSingle: HTMLParagraphElement;
+    private instructionsBatch: HTMLParagraphElement;
+    private amountSingle: HTMLSpanElement;
+    private amountBatch: HTMLSpanElement;
+
     private iotas: HTMLSpanElement;
     private value: HTMLSpanElement;
     private currentContent: HTMLDivElement;
@@ -190,6 +227,7 @@ class EditDialog {
     private transferTag: HTMLInputElement;
 
     private desiredLink: HTMLInputElement;
+    private desiredContent: HTMLDivElement;
     private linkError: HTMLParagraphElement;
     private desiredMessage: HTMLInputElement;
 

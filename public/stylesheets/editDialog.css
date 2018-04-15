@@ -120,16 +120,16 @@
     border-color: aqua;
 }
 
-#linkError {
+.linkError {
     display: none;
-    font-size: xx-small;
+    font-size: x-small;
     color: red;
     margin: 0px;
 }
 
 #transferAddress{
     width: calc(var(--pixmapWidth) * 0.78);
-    font-size: x-small;
+    font-size: small;
     height: 18px;
     padding-left: 10px;
 }

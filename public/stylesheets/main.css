@@ -40,8 +40,92 @@
     box-shadow: 0px 0px 50px #00ffff;
 }
 
+#functions {
+    width: var(--pixmapWidth);
+    margin: auto;
+}
+
+#batchMode {
+    display: none;
+    width: calc(var(--pixmapWidth) - 30px);
+    background-color: #b4ffff;
+    border: solid;
+    /* border-color: #0600ff; */
+    border-color: #ff9100;
+    border-width: 1px;
+    padding: 15px;
+}
+
+#toggleBatchMode{
+    width: 400px;
+}
+
+.function {
+    cursor: pointer;
+    padding: 3px 15px 3px 15px;
+    border-radius: 7px;
+    margin: 20px 10px 0px 0px;
+    background-color: #0600ff;
+    text-align: center;
+    color: #b4ffff;
+}
+
+#batchDone {
+    width: 50px;
+    text-align: center;
+    background-color: #ff9100;
+    color: #0600ff;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#batchColorPicker {
+        border: 1px solid gray; 
+        width: 60px; 
+        height: 20px; 
+        cursor: pointer;
+}
+#batchColorPicker:hover,
+#batchColorPicker:focus{
+    border-color: aqua;
+}
+
+#batchColorValue {
+    width: 50px;
+    height: 15px;
+    margin-left: 10px;
+    border: 1px solid gray;
+    vertical-align: super;
+    text-align: center;
+    font-size: x-small;  
+}
+
+.batchInputField {
+    border: 1px solid gray;
+    width: calc(var(--pixmapWidth) * 0.9);
+    padding-left: 10px;
+}
+.batchInputField:hover,
+.batchInputField:focus{
+    border-color: aqua;
+}
+
+.batchCopyField {
+    width: calc(var(--pixmapWidth) * 0.9);
+    font-weight: bold;
+    border-style: solid;
+    border-width: 1px;
+    border-color: grey;
+    padding-left: 10px;
+    font-size: smaller;
+}
+.batchCopyField:hover {
+    border-color:aqua;
+}
+
 .mapfield {
-    --mapFieldColor: rgba(255, 255, 255, 0);
+    --mapFieldColor: rgb(255, 255, 255);
     
     position:relative;
     width: var(--mapFieldLength);
@@ -51,7 +135,7 @@
     float: left;
 }
 .mapfield:hover {
-    background-color: rgba(0, 214, 252, 0.541);
+    background-color: rgb(180, 255, 255);
 }
 
 #footer{

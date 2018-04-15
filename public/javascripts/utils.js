@@ -1,3 +1,7 @@
+let urlRegEx = new RegExp(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i);
+function getUrlRegEx() {
+    return urlRegEx;
+}
 function rgb2hex(rgb) {
     rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
     return (rgb && rgb.length === 4) ? "#" +
@@ -15,11 +19,11 @@ function trimEnd(value, trimChar) {
     return value;
 }
 function numberToTrytes(input) {
-    var TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var trytes = "";
-    var remainder;
-    var quotient = input;
-    var digit = "";
+    const TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let trytes = "";
+    let remainder;
+    let quotient = input;
+    let digit = "";
     while (quotient != 0) {
         remainder = quotient % 27;
         digit = TRYTE_VALUES.charAt(remainder);
@@ -29,10 +33,10 @@ function numberToTrytes(input) {
     return trytes;
 }
 function trytesToNumber(input) {
-    var TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var result = 0;
-    var position = 0;
-    for (var i = input.length - 1; i >= 0; i--) {
+    const TRYTE_VALUES = "9ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let result = 0;
+    let position = 0;
+    for (let i = input.length - 1; i >= 0; i--) {
         result += TRYTE_VALUES.indexOf(input[i]) * Math.pow(27, position);
         position++;
     }
@@ -70,5 +74,11 @@ function fromTrytes(inputTrytes) {
         outputString += character;
     }
     return outputString;
+}
+function hideElement(element) {
+    element.style.display = "none";
+}
+function showElement(element) {
+    element.style.display = "block";
 }
 //# sourceMappingURL=utils.js.map

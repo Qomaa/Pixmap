@@ -1,15 +1,23 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var debug = require("debug");
-var express = require("express");
-var https = require("https");
-var fs = require("fs");
-var path = require("path");
-var bodyParser = require("body-parser");
-var index_1 = require("./routes/index");
-var db_1 = require("./db");
-var db_2 = require("./db");
-var util_1 = require("./util");
+const debug = require("debug");
+const express = require("express");
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
+const bodyParser = require("body-parser");
+const index_1 = require("./routes/index");
+const db_1 = require("./db");
+const db_2 = require("./db");
+const util_1 = require("./util");
 var app = express();
 app.all('*', function (req, res, next) {
     // console.log('req start: ',req.secure, req.hostname, req.url, app.get('port'));
@@ -38,20 +46,20 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 //     });
 // })
 app.get("/getGuid", function (request, response) {
-    var guid = util_1.newGuid();
+    let guid = util_1.newGuid();
     response.send(guid);
 });
 app.get("/getMessageNum", function (request, response) {
-    var clientID = request.query.clientID;
-    var x = request.query.x;
-    var y = request.query.y;
+    let clientID = request.query.clientID;
+    let x = request.query.x;
+    let y = request.query.y;
     if (!util_1.isGuid(clientID) ||
         x == undefined || x == "" ||
         y == undefined || y == "") {
         response.sendStatus(400);
         return;
     }
-    var message = new db_2.Message(x, y, null, clientID, null, null);
+    let message = new db_2.Message(x, y, null, clientID, null, null);
     db_1.getNextMessageNum(message, function (err, result) {
         if (err) {
             util_1.logError(err);
@@ -62,11 +70,52 @@ app.get("/getMessageNum", function (request, response) {
         }
     });
 });
+app.get("/getNextBatchTag", function (request, response) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let clientID = request.query.clientID;
+        let tag;
+        if (!util_1.isGuid(clientID)) {
+            response.sendStatus(400);
+            return;
+        }
+        db_1.getNextBatchTag(clientID, function (err, result) {
+            if (err) {
+                util_1.logError(err);
+                response.sendStatus(400);
+                return;
+            }
+            response.send(result);
+        });
+    });
+});
+app.post("/storeBatch", function (request, response) {
+    let clientID = request.body.clientID;
+    let tag = request.body.tag;
+    let changeFields = request.body.changedFields;
+    let invalidAddValue = changeFields.find((changedField, index) => {
+        let fieldValue = Number(changedField.value);
+        return fieldValue === undefined || fieldValue === NaN || fieldValue < 1;
+    });
+    if (!util_1.isGuid(clientID) || invalidAddValue) {
+        response.sendStatus(400);
+        return;
+    }
+    let batch = new db_2.Batch(clientID, tag, changeFields);
+    db_1.writeBatch(batch, err => {
+        if (err) {
+            util_1.logError(err);
+            response.sendStatus(400);
+        }
+        else {
+            response.sendStatus(200);
+        }
+    });
+});
 app.post("/storeMessage", function (request, response) {
-    var x = request.body.x;
-    var y = request.body.y;
-    var num = Number(request.body.num);
-    var clientID = request.body.clientID;
+    let x = request.body.x;
+    let y = request.body.y;
+    let num = Number(request.body.num);
+    let clientID = request.body.clientID;
     if (!util_1.isGuid(clientID) ||
         x == undefined || x == "" ||
         y == undefined || y == "" ||
@@ -74,8 +123,8 @@ app.post("/storeMessage", function (request, response) {
         response.sendStatus(400);
         return;
     }
-    var message = new db_2.Message(request.body.x, request.body.y, Number(request.body.num), request.body.clientID, request.body.message, request.body.link);
-    db_1.writeMessage(message, function (err) {
+    let message = new db_2.Message(request.body.x, request.body.y, Number(request.body.num), request.body.clientID, request.body.message, request.body.link);
+    db_1.writeMessage(message, err => {
         if (err) {
             util_1.logError(err);
             response.sendStatus(400);
@@ -88,7 +137,7 @@ app.post("/storeMessage", function (request, response) {
 });
 app.get("/loadMap", function (request, response) {
     // printDB();
-    db_1.readMap(function (err, res) {
+    db_1.readMap((err, res) => {
         if (err) {
             util_1.logError(err);
             response.sendStatus(400);
@@ -130,7 +179,7 @@ app.use(function (req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
+    app.use((err, req, res, next) => {
         res.status(err['status'] || 500);
         res.render('error', {
             message: err.message,
@@ -140,7 +189,7 @@ if (app.get('env') === 'development') {
 }
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
     res.status(err.status || 500);
     res.render('error', {
         message: err.message,

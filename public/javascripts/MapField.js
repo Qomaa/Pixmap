@@ -1,5 +1,5 @@
-var MapField = /** @class */ (function () {
-    function MapField(x, y, color, value, message, link, transaction, timestamp, pixmap) {
+class MapField {
+    constructor(x, y, color, value, message, link, transaction, timestamp, pixmap) {
         this.x = x;
         this.y = y;
         this.pixmap = pixmap;
@@ -10,9 +10,9 @@ var MapField = /** @class */ (function () {
         this.transaction = transaction;
         this.timestamp = timestamp;
     }
-    MapField.prototype.getDivElement = function () {
-        var self = this;
-        var delayedFuncton;
+    getDivElement() {
+        let self = this;
+        // let delayedFuncton;
         this.divElement = document.createElement("div");
         this.divElement.className = "mapfield";
         this.divElement.id = "x" + this.x + "y" + this.y;
@@ -61,7 +61,6 @@ var MapField = /** @class */ (function () {
         //     }
         // });
         return this.divElement;
-    };
-    return MapField;
-}());
+    }
+}
 //# sourceMappingURL=MapField.js.map
