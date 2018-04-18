@@ -32,19 +32,6 @@ app.use('/', routes);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
-/* MAP SPEICHERN */
-// app.post("/mapsavetrytes", function (request, response) {
-//     blobSvc.createBlockBlobFromText("pixmapcontainer", "pixmapblobtrytes", JSON.stringify(request.body), function (error, result, servResponse) {
-//         if (error) { console.log(error) }
-//     });
-// })
-// app.post("/savemap", function (request, response) {
-//     writeMap(request.body, function (err, res) {
-//         if (err) return;
-//         console.log(res);
-//     });
-// })
-
 app.get("/getGuid", function (request, response) {
     let guid = newGuid();
     response.send(guid);
@@ -159,28 +146,6 @@ app.get("/loadMap", function (request, response) {
         }
     });
 });
-
-// app.get("/loadMessage", function (request, response) {
-//     let x = request.query.x;
-//     let y = request.query.y;
-//     let num: number = Number(request.query.num);
-
-//     if (num == NaN ||
-//         x == undefined || x == "" ||
-//         y == undefined || y == "") {
-//         response.sendStatus(400);
-//         return;
-//     }
-
-//     readMessage(new Message(x, y, num, null, null, null), function (err, message, link) {
-//         if (err) {
-//             logError(err);
-//             response.sendStatus(404);
-//         } else {
-//             response.send({ message, link });
-//         }
-//     });
-// });
 
 app.get("/address", function (request, response) {
     response.send(process.env.IOTA_ADDRESS);

@@ -3,17 +3,6 @@ class Pixmap {
         this.divElement = document.getElementById("pixmap");
         this.mapFields = new Array();
     }
-    // saveTrytes() {
-    //     let mapString = JSON.stringify(this, function (key: string, value: any) {
-    //         if (key === "divElement" || key === "pixmap") return undefined;
-    //         return value;
-    //     });
-    //     let m = JSON.parse(mapString);
-    //     let xhttp: XMLHttpRequest = new XMLHttpRequest();
-    //     xhttp.open("POST", "/mapsavetrytes", true);
-    //     xhttp.setRequestHeader("Content-Type", "application/json")
-    //     xhttp.send(mapString);
-    // }
     load(callback) {
         let m;
         let self = this;
@@ -59,22 +48,6 @@ class Pixmap {
             mapField.pixmap = self;
             self.divElement.appendChild(mapField.getDivElement());
         });
-    }
-    generateMapPNG(mapField, callback) {
-        // var file = path.join(dir, req.path.replace(/\/$/, '/index.html'));
-        // if (file.indexOf(dir + path.sep) !== 0) {
-        //     return res.status(403).end('Forbidden');
-        // }
-        // var type = mime[path.extname(file).slice(1)] || 'text/plain';
-        // var s = fs.createReadStream(file);
-        // s.on('open', function () {
-        //     res.set('Content-Type', type);
-        //     s.pipe(res);
-        // });
-        // s.on('error', function () {
-        //     res.set('Content-Type', 'text/plain');
-        //     res.status(404).end('Not found');
-        // });
     }
 }
 //# sourceMappingURL=Pixmap.js.map

@@ -16,30 +16,17 @@ function loadPixmap() {
         map.generateMap();
         loading.style.display = "none";
     });
-    // map.divElement.addEventListener("mouseenter", function (e) {
-    //     if (e.button === 1 && batchMode.isEnabled) // linke Taste
-    //     {
-    //         if (!batchMode.isEnabled) return;
-    //         let id = (e.target as HTMLDivElement).id;
-    //         let x: string = id.substring(1, id.indexOf("y"));
-    //         let y: string = id.substring(id.indexOf("y") + 1);
-    //         let mapField = map.mapFields.filter(item => item.x == x && item.y == y)[0]
-    //         batchMode.setField(mapField);
-    //     }
-    // });
-    map.divElement.addEventListener("mousedown", function (e) {
-        //if (batchMode.isEnabled) return;
-        //console.log(e);
-        let id = e.target.id;
-        let x = id.substring(1, id.indexOf("y"));
-        let y = id.substring(id.indexOf("y") + 1);
-        let mapField = map.mapFields.filter(item => item.x == x && item.y == y)[0];
-        if (mapField === undefined)
+    map.divElement.addEventListener("mouseover", function (e) {
+        if (e.buttons != 1)
             return;
-        if (batchMode.isEnabled)
-            batchMode.setField(mapField);
-        else
-            editDialog.show(mapField);
+        let id = e.target.id;
+        setField(id);
+    });
+    map.divElement.addEventListener("mousedown", function (e) {
+        if (e.buttons != 1)
+            return;
+        let id = e.target.id;
+        setField(id);
     });
     batchMode.divElement.addEventListener("click", function (e) {
         if (!batchMode.isEnabled)
@@ -65,11 +52,6 @@ function loadPixmap() {
         CLIENT_ID = xhttp2.responseText;
     };
     xhttp2.send();
-    /* SAVE BUTTON AUCH SETZEN IN: index.pug, app.ts */
-    // let saveButton = document.getElementById("save") as HTMLButtonElement;
-    // saveButton.addEventListener("click", function(e){
-    //     map.save();
-    // });
 }
 window.onclick = function (event) {
     if (event.target == editDialog.dialogDiv) {
@@ -82,4 +64,15 @@ document.onkeydown = function (event) {
         editDialog.hide();
     }
 };
+function setField(id) {
+    let x = id.substring(1, id.indexOf("y"));
+    let y = id.substring(id.indexOf("y") + 1);
+    let mapField = map.mapFields.filter(item => item.x == x && item.y == y)[0];
+    if (mapField === undefined)
+        return;
+    if (batchMode.isEnabled)
+        batchMode.setField(mapField);
+    else
+        editDialog.show(mapField);
+}
 //# sourceMappingURL=index.js.map

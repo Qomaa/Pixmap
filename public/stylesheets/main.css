@@ -47,10 +47,8 @@
 
 #batchMode {
     display: none;
-    width: calc(var(--pixmapWidth) - 30px);
     background-color: #b4ffff;
     border: solid;
-    /* border-color: #0600ff; */
     border-color: #ff9100;
     border-width: 1px;
     padding: 15px;
@@ -133,9 +131,10 @@
     background-color: var(--mapFieldColor);
 
     float: left;
+    user-select: none;
 }
 .mapfield:hover {
-    background-color: rgb(180, 255, 255);
+    opacity: 0.6;
 }
 
 #footer{

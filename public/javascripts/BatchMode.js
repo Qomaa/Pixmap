@@ -53,7 +53,6 @@ class BatchMode {
         this.toggleBatchModeButton.style.color = "#0600ff";
         this.toggleBatchModeButton.style.borderRadius = "7px 7px 0px 0px";
         this.pixmap.divElement.style.borderColor = "#ff9100";
-        this.pixmap.divElement.style.borderWidth = "3px";
         hideElement(this.linkError);
         hideElement(this.batchError);
         this.desiredLink.onblur = function updateLink(e) {
@@ -81,7 +80,6 @@ class BatchMode {
         this.toggleBatchModeButton.style.color = null;
         this.pixmap.divElement.style.cursor = null;
         this.pixmap.divElement.style.borderColor = null;
-        this.pixmap.divElement.style.borderWidth = null;
         this.transferIota.value = "";
         this.colorHex = "";
         this.backupFields.forEach(field => {
