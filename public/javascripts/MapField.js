@@ -17,7 +17,8 @@ class MapField {
         this.divElement.className = "mapfield";
         this.divElement.id = "x" + this.x + "y" + this.y;
         this.divElement.style.setProperty('--mapFieldColor', this.color);
-        tooltip = this.value + "i";
+        tooltip = "X:" + trytesToNumber(this.x + 1) + " Y:" + trytesToNumber(this.y + 1);
+        tooltip = tooltip + "\r\n" + this.value + "i";
         if (this.link != undefined)
             tooltip = tooltip + "\r\n" + this.link;
         if (this.message != undefined)

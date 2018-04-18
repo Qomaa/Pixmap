@@ -21,9 +21,10 @@
 
         this.divElement.style.setProperty('--mapFieldColor', this.color);
 
-        tooltip = this.value + "i";
+        tooltip = "X:" + trytesToNumber(this.x + 1) + " Y:" + trytesToNumber(this.y + 1);
+        tooltip = tooltip + "\r\n" + this.value + "i";
         if (this.link != undefined)
-            tooltip = tooltip + "\r\n"  + this.link;
+            tooltip = tooltip + "\r\n" + this.link;
         if (this.message != undefined)
             tooltip = tooltip + "\r\n" + this.message;
 
