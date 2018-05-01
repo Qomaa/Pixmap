@@ -32,13 +32,6 @@ block content
                     #ttColor
             tr
                 td#ttValue
-    //- #tooltip
-    //-     .wrap
-    //-         #tooltipPos  
-    //-         #tooltipValue
-    //-     .wrap
-    //-         #tooltipColor
-    //-         #tooltipMessage
     #pixmap
         p#loading loading ...
     #functions
@@ -70,11 +63,11 @@ block content
     div#footer
         a.footerlink(href="https://www.youtube.com/watch?v=ivWqqfzunhI") What is IOTA (video)?
         a.footerlink(href="https://iotasupport.com/gui-sendingandreceiving.shtml") How to transfer IOTA?
-        a.footerlink(href="https://github.com/Qomaa/Pixmap") github
+        
         #disclaimer
-            span Made by @Qoma on 
-            a(href="https://discord.gg/fNGZXvh") IOTA discord.
-            span  This is a BETA software, the technical functionality can't be guaranteed. Transfered IOTAs can't be refunded. The website administrator reserves the right to delete inappropriate entries.
+            div This is a BETA software, the technical functionality can't be guaranteed. Transfered IOTAs can't be refunded. The website administrator reserves the right to delete inappropriate entries.
+            div Do you have an issue using this website or an idea to improve it? Please post on 
+                a(href="https://github.com/Qomaa/Pixmap") github.
     #editDialog
         #dialogContent
             p#dialogHead
@@ -117,4 +110,3 @@ block content
                 p.caption Transaction Tag OR Message:
                     p.inputValue
                         input#transferTag.copyField(type="input" readonly)
-    //- button(id="save") save
