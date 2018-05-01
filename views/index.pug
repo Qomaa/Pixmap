@@ -22,6 +22,23 @@ block content
     p(style="font-size:small;text-align:center;color:#0600ff;padding-bottom:20px;margin-top:0px;") Click on a dot to change its color. You can also write a message and post a link.
     p(style="text-align:center;")
         a(href="/table") View top valued dots in a table
+    #tooltip
+        table#tttable
+            tr
+                td#ttPosition
+                td#ttMessage(rowspan="3" valign="center")
+            tr
+                td
+                    #ttColor
+            tr
+                td#ttValue
+    //- #tooltip
+    //-     .wrap
+    //-         #tooltipPos  
+    //-         #tooltipValue
+    //-     .wrap
+    //-         #tooltipColor
+    //-         #tooltipMessage
     #pixmap
         p#loading loading ...
     #functions

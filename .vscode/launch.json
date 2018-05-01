@@ -16,7 +16,7 @@
                 "NODE_ENV": "development",
                 "DB_CONNECTION_STRING": "mongodb://127.0.0.1:27017",
                 "DB_NAME": "pixdb_test",
-                "IOTA_ADDRESS": "9FZEODJXTEANNYJBRCPZA9FJNTHNYYYWSFZCEKCGBO9EEQITJTIKLKWOSYQTZNKMNEXMBOMHIBZWYOFQBW9DBMZFM9",
+                "IOTA_ADDRESS": "XLQREBKIDVHUXGMUUKUXTXDVSAXIBUVKXPDCP9IJKWHHSGYVJUMQPAHWMQCCNAWSYZXBXCHHWVSFKXPBXBCGYHMCUC",
                 "SSLCHAIN": "./sslcert/fullchain.pem",
                 "SSLKEY": "./sslcert/privkey.pem"
             }
@@ -33,7 +33,7 @@
                 "NODE_ENV": "development",
                 "DB_CONNECTION_STRING": "mongodb://127.0.0.1:27017",
                 "DB_NAME": "pixdb_test",
-                "IOTA_ADDRESS": "9FZEODJXTEANNYJBRCPZA9FJNTHNYYYWSFZCEKCGBO9EEQITJTIKLKWOSYQTZNKMNEXMBOMHIBZWYOFQBW9DBMZFM9",
+                "IOTA_ADDRESS": "XLQREBKIDVHUXGMUUKUXTXDVSAXIBUVKXPDCP9IJKWHHSGYVJUMQPAHWMQCCNAWSYZXBXCHHWVSFKXPBXBCGYHMCUC",
                 "SSLCHAIN": "./sslcert/fullchain.pem",
                 "SSLKEY": "/sslcert/privkey.pem"
             }

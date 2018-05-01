@@ -1,67 +1,68 @@
-[tooltip]:before {
-    /* needed - do not touch */
-    content: attr(tooltip);
-    position: absolute;
-    opacity: 0;
-    
-    /* customizable */
-    /* transition: all 0.15s ease; */
-    padding: 10px;
-    color: #333;
-    border-radius: 10px;
-    /* box-shadow: 2px 2px 1px silver;     */
+#tooltip {
+    position: absolute; 
+    z-index: 99; 
+    border: 1px solid blue; 
+    border-radius: 1px 5px 5px 5px;
+    background-color: aliceblue;
+    display: none;
 }
 
-[tooltip]:hover:before {
-    /* needed - do not touch */
-    opacity: 1;
-    
-    /* customizable */
-    background: yellow;
-    margin-top: -50px;
-    margin-left: 20px;    
+#ttPosition {
+    height: 12px;
+    width: 50px;
+    font-size: x-small;
+    text-align: center;
 }
 
-[tooltip]:not([tooltip-persistent]):before {
-    pointer-events: none;
+#ttValue {
+    height: 12px;
+    font-size: x-small;
+    text-align: center;
+}
+
+#ttColor {
+    width: 25px;
+    height: 25px;
+    border: 1px solid blue;
+    margin: auto;
+}
+
+#ttMessage {
+    font-size: small;
 }
 
 /* #tooltip {
-    --tooltipPosvalHeight: 20px;
-    --tooltipMessageHeight: 0px;
-    --tooltipLinkHeight: 0px;
-
     position: absolute; 
-    top: +15px; 
-    left: +20px;
-
-    z-index: 10;
-    width: 300px;
-    height:  calc(var(--tooltipPosvalHeight) + var(--tooltipLinkHeight) + var(--tooltipMessageHeight));
-    padding: 5px;
-    color: rgb(0, 0, 0);
-    background-color: #fff8dd;
-    border: 1px solid silver;
-    border-radius: 5px;
-    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.247);    
+    z-index: 99; 
+    left: 0px; 
+    top: 0px;
+    border: 1px solid blue; 
+    background: white;
+    display: none;
+    padding: 2px;
 }
 
-#tooltipPosval{
+.wrap {
+    display:flex;
+}
+
+#tooltipPos {
+    height: 12px;
+    font-size: x-small
+}
+
+#tooltipColor {
+    width: 25px;
+    height: 25px;
+    border: 1px solid blue;
+}
+
+#tooltipValue {
+    height: 12px;
+    font-size: x-small;
+}
+
+#tooltipMessage {
+    height: 25px;
     font-size: small;
-    margin-top: 0px;
-}
-
-#tooltipLink{
-    font-size: unset;
-    height: var(--tooltipHeight);
-}
-
-#tooltipMessage{
-    background-color: #fff8dd;
-    border:none;
-    height: var(--tooltipHeight);
-    overflow: hidden;
-    width:295px;
-    font-size: large;
-    resize: none;
 } */

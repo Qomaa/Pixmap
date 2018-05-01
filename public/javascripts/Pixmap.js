@@ -15,7 +15,6 @@ class Pixmap {
             if (xhttp.readyState !== XMLHttpRequest.DONE || xhttp.status !== 200)
                 return;
             m = JSON.parse(xhttp.responseText);
-            //console.log(xhttp.responseText);
             self.width = m.width;
             self.height = m.height;
             self.fieldLength = m.fieldLength;
@@ -23,8 +22,6 @@ class Pixmap {
             self.columnCount = m.columnCount;
             self.mapFields = m.mapFields;
             callback();
-            // self.generateMap();
-            // self.convertToMongo();
         };
         xhttp.send();
     }
@@ -45,6 +42,7 @@ class Pixmap {
         body.style.setProperty("--pixmapHeight", this.height + "px");
         this.mapFields.forEach(function (mapField) {
             mapField.getDivElement = MapField.prototype.getDivElement; //Die Funktion kommt nicht aus dem JSON-Objekt und muss manuell zugewiesen werden.
+            mapField.showTooltip = MapField.prototype.showTooltip;
             mapField.pixmap = self;
             self.divElement.appendChild(mapField.getDivElement());
         });

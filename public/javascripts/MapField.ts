@@ -12,25 +12,41 @@
     }
 
     getDivElement(): HTMLDivElement {
-        let self = this;
-        let tooltip: string;
-
         this.divElement = document.createElement("div");
         this.divElement.className = "mapfield";
         this.divElement.id = "x" + this.x + "y" + this.y;
 
         this.divElement.style.setProperty('--mapFieldColor', this.color);
 
-        tooltip = "X:" + (trytesToNumber(this.x) + 1) + " Y:" + (trytesToNumber(this.y) + 1);
-        tooltip = tooltip + "\r\n" + this.value + "i";
-        if (this.link != undefined)
-            tooltip = tooltip + "\r\n" + this.link;
-        if (this.message != undefined)
-            tooltip = tooltip + "\r\n" + this.message;
-
-        this.divElement.setAttribute("title", tooltip);
-
         return this.divElement;
+    }
+
+    showTooltip(mouseX: number, mouseY: number) {
+        let tt = document.querySelector("#tooltip") as HTMLTableElement;
+        let ttColor = document.querySelector("#ttColor") as HTMLDivElement;
+        let ttPos = document.querySelector("#ttPosition") as HTMLTableDataCellElement;
+        let ttValue = document.querySelector("#ttValue") as HTMLTableDataCellElement;
+        let ttMessage = document.querySelector("#ttMessage") as HTMLTableDataCellElement;
+        let offset: number = 10;
+
+        tt.style.top = (offset + this.divElement.offsetTop) + "px";
+        tt.style.left = (offset + this.divElement.offsetLeft) + "px";
+
+        ttColor.style.backgroundColor = this.color;
+
+        ttPos.textContent = "X:" + (trytesToNumber(this.y) + 1) + " Y:" + (trytesToNumber(this.x) + 1);
+
+        ttValue.textContent = this.value + "i";
+
+        if (this.message != undefined) {
+            ttMessage.textContent = this.message;
+            ttMessage.style.display = "table-cell";
+        }
+        else {
+            hideElement(ttMessage);
+        }
+
+        showElement(tt);
     }
 
     divElement: HTMLDivElement;

@@ -133,9 +133,9 @@
     float: left;
     user-select: none;
 }
-.mapfield:hover {
+/* .mapfield:hover {
     opacity: 0.6;
-}
+} */
 
 #footer{
     margin-top: 40px;

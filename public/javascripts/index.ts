@@ -10,6 +10,7 @@ window.onload = function () {
 
 function loadPixmap() {
     let loading = document.getElementById("loading");
+    let tooltip = document.getElementById("tooltip");
     loading.style.display = "block";
 
     editDialog = new EditDialog();
@@ -21,16 +22,35 @@ function loadPixmap() {
         loading.style.display = "none";
     });
 
+    map.divElement.addEventListener("mouseleave", function (e: MouseEvent) {
+        tooltip.style.display = "none";
+    });
+
     map.divElement.addEventListener("mouseover", function (e: MouseEvent) {
-        if (e.buttons != 1) return;
-        let id = (e.target as HTMLDivElement).id
-        setField(id);
+        let mapField = getMapField((e.target as HTMLDivElement).id);
+
+        if (mapField === undefined) {
+            hideElement(tooltip);
+            return;
+        }
+
+        if (batchMode.isEnabled) {
+            hideElement(tooltip);
+            if (e.buttons != 1) return;
+            batchMode.setField(mapField);
+        } else {
+            mapField.showTooltip(e.clientX, e.clientY);
+        }
     });
 
     map.divElement.addEventListener("mousedown", function (e: MouseEvent) {
         if (e.buttons != 1) return;
-        let id = (e.target as HTMLDivElement).id
-        setField(id);
+        let mapField = getMapField((e.target as HTMLDivElement).id);
+
+        if (batchMode.isEnabled)
+            batchMode.setField(mapField);
+        else
+            editDialog.show(mapField);
     });
 
     batchMode.divElement.addEventListener("click", function (e: MouseEvent) {
@@ -72,15 +92,8 @@ document.onkeydown = function (event) {
     }
 }
 
-function setField(id: string) {
+function getMapField(id: string) {
     let x: string = id.substring(1, id.indexOf("y"));
     let y: string = id.substring(id.indexOf("y") + 1);
-    let mapField = map.mapFields.filter(item => item.x == x && item.y == y)[0]
-
-    if (mapField === undefined) return;
-
-    if (batchMode.isEnabled)
-        batchMode.setField(mapField);
-    else
-        editDialog.show(mapField);
+    return map.mapFields.filter(item => item.x == x && item.y == y)[0]
 }

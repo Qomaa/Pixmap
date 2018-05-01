@@ -8,6 +8,7 @@ window.onload = function () {
 };
 function loadPixmap() {
     let loading = document.getElementById("loading");
+    let tooltip = document.getElementById("tooltip");
     loading.style.display = "block";
     editDialog = new EditDialog();
     map = new Pixmap();
@@ -16,17 +17,33 @@ function loadPixmap() {
         map.generateMap();
         loading.style.display = "none";
     });
+    map.divElement.addEventListener("mouseleave", function (e) {
+        tooltip.style.display = "none";
+    });
     map.divElement.addEventListener("mouseover", function (e) {
-        if (e.buttons != 1)
+        let mapField = getMapField(e.target.id);
+        if (mapField === undefined) {
+            hideElement(tooltip);
             return;
-        let id = e.target.id;
-        setField(id);
+        }
+        if (batchMode.isEnabled) {
+            hideElement(tooltip);
+            if (e.buttons != 1)
+                return;
+            batchMode.setField(mapField);
+        }
+        else {
+            mapField.showTooltip(e.clientX, e.clientY);
+        }
     });
     map.divElement.addEventListener("mousedown", function (e) {
         if (e.buttons != 1)
             return;
-        let id = e.target.id;
-        setField(id);
+        let mapField = getMapField(e.target.id);
+        if (batchMode.isEnabled)
+            batchMode.setField(mapField);
+        else
+            editDialog.show(mapField);
     });
     batchMode.divElement.addEventListener("click", function (e) {
         if (!batchMode.isEnabled)
@@ -64,15 +81,9 @@ document.onkeydown = function (event) {
         editDialog.hide();
     }
 };
-function setField(id) {
+function getMapField(id) {
     let x = id.substring(1, id.indexOf("y"));
     let y = id.substring(id.indexOf("y") + 1);
-    let mapField = map.mapFields.filter(item => item.x == x && item.y == y)[0];
-    if (mapField === undefined)
-        return;
-    if (batchMode.isEnabled)
-        batchMode.setField(mapField);
-    else
-        editDialog.show(mapField);
+    return map.mapFields.filter(item => item.x == x && item.y == y)[0];
 }
 //# sourceMappingURL=index.js.map

@@ -52,7 +52,7 @@ class EditDialog {
         showElement(this.instructionsSingle);
         showElement(this.amountSingle);
         //Current values
-        this.position.textContent = "X:" + (trytesToNumber(mapField.x) + 1) + "  Y:" + (trytesToNumber(mapField.y) + 1);
+        this.position.textContent = "X:" + (trytesToNumber(mapField.y) + 1) + "  Y:" + (trytesToNumber(mapField.x) + 1);
         if (mapField.timestamp != undefined)
             this.timestamp.textContent = new Date(+mapField.timestamp).toLocaleString();
         if (mapField.transaction != undefined) {

@@ -11,20 +11,32 @@ class MapField {
         this.timestamp = timestamp;
     }
     getDivElement() {
-        let self = this;
-        let tooltip;
         this.divElement = document.createElement("div");
         this.divElement.className = "mapfield";
         this.divElement.id = "x" + this.x + "y" + this.y;
         this.divElement.style.setProperty('--mapFieldColor', this.color);
-        tooltip = "X:" + (trytesToNumber(this.x) + 1) + " Y:" + (trytesToNumber(this.y) + 1);
-        tooltip = tooltip + "\r\n" + this.value + "i";
-        if (this.link != undefined)
-            tooltip = tooltip + "\r\n" + this.link;
-        if (this.message != undefined)
-            tooltip = tooltip + "\r\n" + this.message;
-        this.divElement.setAttribute("title", tooltip);
         return this.divElement;
+    }
+    showTooltip(mouseX, mouseY) {
+        let tt = document.querySelector("#tooltip");
+        let ttColor = document.querySelector("#ttColor");
+        let ttPos = document.querySelector("#ttPosition");
+        let ttValue = document.querySelector("#ttValue");
+        let ttMessage = document.querySelector("#ttMessage");
+        let offset = 10;
+        tt.style.top = (offset + this.divElement.offsetTop) + "px";
+        tt.style.left = (offset + this.divElement.offsetLeft) + "px";
+        ttColor.style.backgroundColor = this.color;
+        ttPos.textContent = "X:" + (trytesToNumber(this.y) + 1) + " Y:" + (trytesToNumber(this.x) + 1);
+        ttValue.textContent = this.value + "i";
+        if (this.message != undefined) {
+            ttMessage.textContent = this.message;
+            ttMessage.style.display = "table-cell";
+        }
+        else {
+            hideElement(ttMessage);
+        }
+        showElement(tt);
     }
 }
 //# sourceMappingURL=MapField.js.map
