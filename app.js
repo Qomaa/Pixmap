@@ -34,8 +34,10 @@ app.use('/', index_1.default);
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 app.get("/getGuid", function (request, response) {
+    let ip = request.connection.remoteAddress;
     let guid = util_1.newGuid();
     response.send(guid);
+    util_1.log("Guid created: " + guid + " (" + ip + ")");
 });
 app.get("/getMessageNum", function (request, response) {
     let clientID = request.query.clientID;
