@@ -112,7 +112,7 @@ class EditDialog {
 
     hide() {
         if (this.dirty)
-            this.updateMessage(self, this.mapField);
+            this.updateMessage(this, this.mapField);
 
         //Reset values
         this.messageNum = undefined;
