@@ -51,6 +51,8 @@ class EditDialog {
     show(mapField: MapField) {
         let self = this;
 
+        this.mapField = mapField;
+
         hideElement(this.instructionsBatch);
         hideElement(this.amountBatch);
         showElement(this.desiredContent);
@@ -106,6 +108,9 @@ class EditDialog {
     }
 
     hide() {
+        if (this.desiredMessage.value !== "" && this.desiredLink.value !== "")
+            this.updateMessage(self, this.mapField);
+
         //Reset values
         this.messageNum = undefined;
         this.desiredLink.value = "";
@@ -203,6 +208,9 @@ class EditDialog {
     }
 
     dialogDiv: HTMLDivElement;
+
+    private mapField: MapField;
+
     private dialogHead: HTMLParagraphElement;
     private colorHex: string;
     private colorButton: any;

@@ -45,6 +45,7 @@ class EditDialog {
     }
     show(mapField) {
         let self = this;
+        this.mapField = mapField;
         hideElement(this.instructionsBatch);
         hideElement(this.amountBatch);
         showElement(this.desiredContent);
@@ -94,6 +95,8 @@ class EditDialog {
         showElement(this.dialogDiv);
     }
     hide() {
+        if (this.desiredMessage.value !== "" && this.desiredLink.value !== "")
+            this.updateMessage(self, this.mapField);
         //Reset values
         this.messageNum = undefined;
         this.desiredLink.value = "";
