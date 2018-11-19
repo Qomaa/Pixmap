@@ -1,5 +1,6 @@
 class EditDialog {
     constructor() {
+        this.dirty = false;
         this.dialogDiv = document.querySelector("#editDialog");
         this.dialogHead = document.querySelector("#dialogHead");
         this.position = document.querySelector("#dialogXY");
@@ -66,6 +67,7 @@ class EditDialog {
         this.colorButton.jscolor.onFineChange = () => {
             this.colorHex = this.colorButton.jscolor.toHEXString();
             this.updateTag(mapField);
+            self.dirty = true;
         };
         this.colorButton.jscolor.fromString(mapField.color);
         this.colorHex = this.colorButton.jscolor.toHEXString();
@@ -79,11 +81,13 @@ class EditDialog {
             else
                 hideElement(self.linkError);
             self.updateMessage(self, mapField);
+            self.dirty = true;
         };
         this.desiredMessage.onblur = function updateMessage(e) {
             if (self.desiredMessage.value == "")
                 return;
             self.updateMessage(self, mapField);
+            self.dirty = true;
         };
         //Transfer/Description
         this.transferIota.value = (mapField.value + 1).toString() + "i";
@@ -95,7 +99,7 @@ class EditDialog {
         showElement(this.dialogDiv);
     }
     hide() {
-        if (this.desiredMessage.value !== "" && this.desiredLink.value !== "")
+        if (this.dirty)
             this.updateMessage(self, this.mapField);
         //Reset values
         this.messageNum = undefined;

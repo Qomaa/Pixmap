@@ -76,6 +76,7 @@ class EditDialog {
         this.colorButton.jscolor.onFineChange = () => {
             this.colorHex = this.colorButton.jscolor.toHEXString();
             this.updateTag(mapField);
+            self.dirty = true;
         };
         this.colorButton.jscolor.fromString(mapField.color);
         this.colorHex = this.colorButton.jscolor.toHEXString();
@@ -90,10 +91,12 @@ class EditDialog {
                 hideElement(self.linkError);
 
             self.updateMessage(self, mapField);
+            self.dirty = true;
         }
         this.desiredMessage.onblur = function updateMessage(e) {
             if (self.desiredMessage.value == "") return;
             self.updateMessage(self, mapField);
+            self.dirty = true;
         }
 
         //Transfer/Description
@@ -108,7 +111,7 @@ class EditDialog {
     }
 
     hide() {
-        if (this.desiredMessage.value !== "" && this.desiredLink.value !== "")
+        if (this.dirty)
             this.updateMessage(self, this.mapField);
 
         //Reset values
@@ -208,6 +211,8 @@ class EditDialog {
     }
 
     dialogDiv: HTMLDivElement;
+
+    private dirty: boolean = false;
 
     private mapField: MapField;
 
