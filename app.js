@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const debug = require("debug");
 const express = require("express");
+const https = require("https");
+const fs = require("fs");
 const path = require("path");
 const bodyParser = require("body-parser");
 const index_1 = require("./routes/index");
@@ -19,12 +21,10 @@ const util_1 = require("./util");
 var app = express();
 app.all('*', function (req, res, next) {
     // console.log('req start: ',req.secure, req.hostname, req.url, app.get('port'));
-    //Zum Aktivieren von SLL einkommentieren:
-    //if (req.secure) {
-    //    return next();
-    //}
-    //res.redirect('https://' + req.hostname + ':' + app.get('secPort') + req.url);
-    return next();
+    if (req.secure) {
+        return next();
+    }
+    res.redirect('https://' + req.hostname + ':' + app.get('secPort') + req.url);
 });
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -172,9 +172,8 @@ app.set('secPort', process.env.PORT || 443);
 var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
-//SSL aktivieren
-//https.createServer({
-//    cert: fs.readFileSync(process.env.SSLCHAIN),
-//    key: fs.readFileSync(process.env.SSLKEY)
-//}, app).listen(app.get('secPort'));
+https.createServer({
+    cert: fs.readFileSync(process.env.SSLCHAIN),
+    key: fs.readFileSync(process.env.SSLKEY)
+}, app).listen(app.get('secPort'));
 //# sourceMappingURL=app.js.map

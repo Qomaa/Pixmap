@@ -16,13 +16,10 @@ var app = express();
 app.all('*', function (req, res, next) {
     // console.log('req start: ',req.secure, req.hostname, req.url, app.get('port'));
 
-    //Zum Aktivieren von SLL einkommentieren:
-    //if (req.secure) {
-    //    return next();
-    //}
-    //res.redirect('https://' + req.hostname + ':' + app.get('secPort') + req.url);
-
-    return next();
+    if (req.secure) {
+        return next();
+    }
+    res.redirect('https://' + req.hostname + ':' + app.get('secPort') + req.url);
 });
 
 // view engine setup
@@ -194,8 +191,7 @@ var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
 
-//SSL aktivieren
-//https.createServer({
-//    cert: fs.readFileSync(process.env.SSLCHAIN),
-//    key: fs.readFileSync(process.env.SSLKEY)
-//}, app).listen(app.get('secPort'));
+https.createServer({
+    cert: fs.readFileSync(process.env.SSLCHAIN),
+    key: fs.readFileSync(process.env.SSLKEY)
+}, app).listen(app.get('secPort'));
